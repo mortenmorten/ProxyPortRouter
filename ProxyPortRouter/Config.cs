@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace ProxyPortRouter
 {
     [DataContract]
-    public class CommandEntries
+    public class Config : IConfig
     {
         [DataMember(Name = "listenAddress")]
         public string ListenAddress { get; set; }

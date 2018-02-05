@@ -2,7 +2,7 @@
 
 namespace ProxyPortRouter
 {
-    public class PortProxyManager : BindableBase, IConnectAddressSetter
+    public class PortProxyManager : BindableBase, IConnectAddressSetter, IPortProxyManager
     {
         private string listenAddress;
         private string connectAddress;

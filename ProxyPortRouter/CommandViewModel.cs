@@ -5,15 +5,15 @@ namespace ProxyPortRouter
 {
     public class CommandViewModel : EntryViewModel
     {
-        private readonly IConnectAddressSetter addressSetter;
+        private readonly IPortProxyController proxyController;
 
-        public CommandViewModel(CommandEntry model, IConnectAddressSetter addressSetter)
+        public CommandViewModel(CommandEntry model, IPortProxyController proxyController)
             : base(model)
         {
-            this.addressSetter = addressSetter;
+            this.proxyController = proxyController;
         }
 
         public ICommand ExecuteCommand =>
-            new DelegateCommand(() => addressSetter?.SetConnectAddress(Model.Address));
+            new DelegateCommand(() => proxyController?.SetCurrentEntry(Model.Name));
     }
 }

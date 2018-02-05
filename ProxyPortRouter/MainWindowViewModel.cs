@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Mvvm;
 
 namespace ProxyPortRouter
@@ -8,11 +10,17 @@ namespace ProxyPortRouter
         : BindableBase
     {
         private ObservableCollection<CommandViewModel> commandEntries = new ObservableCollection<CommandViewModel>();
-        private readonly PortProxyManager proxyManager = new PortProxyManager();
+        private readonly PortProxyManager proxyManager;
+        private readonly IPortProxyController proxyController;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IServiceProvider serviceProvider)
+        : this(serviceProvider.GetService<IConfig>(), serviceProvider.GetService<IPortProxyManager>(), serviceProvider.GetService<IPortProxyController>())
+        { }
+
+        private MainWindowViewModel(IConfig config, IPortProxyManager proxyManager, IPortProxyController proxyController)
         {
-            proxyManager.PropertyChanged += (sender, args) =>
+            this.proxyManager = (PortProxyManager)proxyManager;
+            this.proxyManager.PropertyChanged += (sender, args) =>
             {
                 switch (args.PropertyName)
                 {
@@ -25,6 +33,10 @@ namespace ProxyPortRouter
                         break;
                 }
             };
+
+            this.proxyController = proxyController;
+
+            SetConfig(config);
         }
 
         public ObservableCollection<CommandViewModel> CommandEntries
@@ -37,12 +49,11 @@ namespace ProxyPortRouter
 
         public string ListenAddress => proxyManager.ListenAddress;
 
-        public void Load(string filename)
+        private void SetConfig(IConfig config)
         {
             CommandEntries.Clear();
-            var settings = JsonSerializer<CommandEntries>.Deserialize(filename);
-            proxyManager.ListenAddress = settings.ListenAddress;
-            settings.Entries?.ForEach(entry => CommandEntries.Add(new CommandViewModel(entry, proxyManager)));
+            proxyManager.ListenAddress = config.ListenAddress;
+            config.Entries?.ForEach(entry => CommandEntries.Add(new CommandViewModel(entry, proxyController)));
             proxyManager.RefreshCurrentConnectAddress();
         }
 

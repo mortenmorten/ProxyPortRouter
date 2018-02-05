@@ -16,7 +16,7 @@ namespace ProxyPortRouter.Tests
         [Test]
         public void DeserializeFromString_CommandEntries_NonNullObject()
         {
-            var test = JsonSerializer<CommandEntries>.DeserializeFromString("{ \"entries\": [ { \"name\": \"test1\", \"command\": \"cmd1\" }, { \"name\": \"test2\", \"command\": \"cmd2\" } ] }");
+            var test = JsonSerializer<Config>.DeserializeFromString("{ \"entries\": [ { \"name\": \"test1\", \"command\": \"cmd1\" }, { \"name\": \"test2\", \"command\": \"cmd2\" } ] }");
             Assert.That(test, Is.Not.Null);
             Assert.That(test.Entries, Is.Not.Empty);
             Assert.That(test.Entries[0].Name, Is.EqualTo("test1"));
@@ -25,7 +25,7 @@ namespace ProxyPortRouter.Tests
         [Test]
         public void DeserializeFromString_CommandEntriesFile_NonNullObject()
         {
-            var test = JsonSerializer<CommandEntries>.Deserialize(
+            var test = JsonSerializer<Config>.Deserialize(
                 System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, "entries.json"));
             Assert.That(test, Is.Not.Null);
             Assert.That(test.Entries, Is.Not.Empty);

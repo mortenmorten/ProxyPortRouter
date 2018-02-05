@@ -7,8 +7,7 @@
         Title="Port Proxy Router"
         Height="150"
         Width="300"
-        d:DataContext="{d:DesignData Source=/SampleData/MainWindowSampleData.xaml}"
-        Loaded="WindowLoaded">
+        d:DataContext="{d:DesignData Source=/SampleData/MainWindowSampleData.xaml}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

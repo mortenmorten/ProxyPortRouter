@@ -7,3 +7,5 @@
 bin/
 obj/
 *.user
+/ProxyPortRouter/ProxyPortRouterKey.snk
+/ProxyPortRouter.zip

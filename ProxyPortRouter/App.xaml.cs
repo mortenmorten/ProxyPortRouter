@@ -43,7 +43,7 @@ namespace ProxyPortRouter
             serviceCollection.AddSingleton<IPortProxyController, PortProxyController>();
             serviceCollection.AddSingleton<ISlaveClient>(p =>
             {
-                var syncAddress = p.GetService<IOptions>().SlaveAddress;
+                var syncAddress = p.GetService<IOptions>()?.SlaveAddress;
                 return string.IsNullOrEmpty(syncAddress) ? null : new RestClient(new Uri($"http://{syncAddress}:{RestApiPort}"));
             });
         }

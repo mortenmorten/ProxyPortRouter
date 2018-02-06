@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.Utilities
 {
     public class CommandResultParser
     {

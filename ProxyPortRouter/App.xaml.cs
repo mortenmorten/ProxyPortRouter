@@ -16,7 +16,7 @@ namespace ProxyPortRouter
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, IDisposable
     {
         private const int RestApiPort = 8080;
 
@@ -26,9 +26,9 @@ namespace ProxyPortRouter
 
         private static IWebHost BuildWebHost(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
+            return WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>()
-                .ConfigureServices(ConfigureServices)
+                .ConfigureServices(sc => ConfigureServices(sc, args))
                 .UseKestrel(options =>
                 {
                     options.Listen(IPAddress.Any, RestApiPort);
@@ -36,11 +36,12 @@ namespace ProxyPortRouter
                 .Build();
         }
 
-        private static void ConfigureServices(IServiceCollection serviceCollection)
+        private static void ConfigureServices(IServiceCollection serviceCollection, string[] args)
         {
-            serviceCollection.AddSingleton<ISettings>(SettingsFile.Load("entries.json"));
+            serviceCollection.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData("entries.json"));
             serviceCollection.AddSingleton<IPortProxyManager, PortProxyManager>();
             serviceCollection.AddSingleton<IPortProxyController, PortProxyController>();
+            serviceCollection.AddSingleton<IOptions>(p => Options.Create(args));
             serviceCollection.AddSingleton<ISlaveClient>(p =>
             {
                 var syncAddress = p.GetService<IOptions>()?.SlaveAddress;
@@ -50,10 +51,6 @@ namespace ProxyPortRouter
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            IServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton<IOptions>(p => Options.Create(e.Args));
-            ConfigureServices(serviceCollection);
-
             webHost = BuildWebHost(e.Args);
 
             var mainWindowViewModel = new MainWindowViewModel(webHost.Services);
@@ -63,11 +60,23 @@ namespace ProxyPortRouter
             webHostTask = webHost.RunAsync(cts.Token);
         }
 
-        private async void OnExit(object sender, ExitEventArgs e)
+        private void OnExit(object sender, ExitEventArgs e)
         {
             cts.Cancel();
-            await webHostTask;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            cts.Dispose();
             webHost?.Dispose();
+            webHostTask?.Dispose();
         }
     }
 }

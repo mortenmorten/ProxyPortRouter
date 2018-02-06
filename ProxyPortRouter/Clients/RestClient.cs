@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ProxyPortRouter.Clients
 {
-    public class RestClient : ISlaveClient
+    public class RestClient : ISlaveClient, IDisposable
     {
         private readonly HttpClient client;
 
@@ -16,6 +16,20 @@ namespace ProxyPortRouter.Clients
         public async Task SetCurrentEntry(string name)
         {
             await client.PutAsync($"api/entry?name={name}", null);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                client.Dispose();
+            }
         }
     }
 }

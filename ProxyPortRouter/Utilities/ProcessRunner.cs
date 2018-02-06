@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.Utilities
 {
     public static class ProcessRunner
     {

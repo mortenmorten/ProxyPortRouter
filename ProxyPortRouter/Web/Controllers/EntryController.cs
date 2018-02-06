@@ -28,7 +28,7 @@ namespace ProxyPortRouter.Web.Controllers
             try
             {
                 proxyController.SetCurrentEntry(name);
-                return Ok();
+                return GetCurrent();
             }
             catch (InvalidOperationException exception)
             {

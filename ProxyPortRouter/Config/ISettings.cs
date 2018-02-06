@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.Config
 {
-    public interface IConfig
+    public interface ISettings
     {
         string ListenAddress { get; set; }
 

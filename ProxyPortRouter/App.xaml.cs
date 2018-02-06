@@ -6,6 +6,7 @@ using System.Windows;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using ProxyPortRouter.Config;
 using ProxyPortRouter.Utilities;
 using ProxyPortRouter.Web;
 
@@ -34,7 +35,7 @@ namespace ProxyPortRouter
 
         private static void ConfigureServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IConfig>(ConfigFile.Load("entries.json"));
+            serviceCollection.AddSingleton<ISettings>(SettingsFile.Load("entries.json"));
             serviceCollection.AddSingleton<IPortProxyManager, PortProxyManager>();
             serviceCollection.AddSingleton<IPortProxyController, PortProxyController>();
         }

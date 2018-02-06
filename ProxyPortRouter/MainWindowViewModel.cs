@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Mvvm;
+using ProxyPortRouter.Config;
 using ProxyPortRouter.UI;
 using ProxyPortRouter.Utilities;
 
@@ -16,10 +17,10 @@ namespace ProxyPortRouter
         private readonly IPortProxyController proxyController;
 
         public MainWindowViewModel(IServiceProvider serviceProvider)
-        : this(serviceProvider.GetService<IConfig>(), serviceProvider.GetService<IPortProxyManager>(), serviceProvider.GetService<IPortProxyController>())
+        : this(serviceProvider.GetService<ISettings>(), serviceProvider.GetService<IPortProxyManager>(), serviceProvider.GetService<IPortProxyController>())
         { }
 
-        private MainWindowViewModel(IConfig config, IPortProxyManager proxyManager, IPortProxyController proxyController)
+        private MainWindowViewModel(ISettings config, IPortProxyManager proxyManager, IPortProxyController proxyController)
         {
             this.proxyManager = (PortProxyManager)proxyManager;
             this.proxyManager.PropertyChanged += (sender, args) =>
@@ -51,7 +52,7 @@ namespace ProxyPortRouter
 
         public string ListenAddress => proxyManager.ListenAddress;
 
-        private void SetConfig(IConfig config)
+        private void SetConfig(ISettings config)
         {
             CommandEntries.Clear();
             proxyManager.ListenAddress = config.ListenAddress;

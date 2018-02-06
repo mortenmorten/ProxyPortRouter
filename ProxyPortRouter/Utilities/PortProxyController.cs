@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using ProxyPortRouter.Config;
 
 namespace ProxyPortRouter.Utilities
 {
     [UsedImplicitly]
     public class PortProxyController : IPortProxyController
     {
-        private readonly IConfig config;
+        private readonly ISettings config;
         private readonly IPortProxyManager proxyManager;
 
-        public PortProxyController(IConfig config, IPortProxyManager proxyManager)
+        public PortProxyController(ISettings config, IPortProxyManager proxyManager)
         {
             this.config = config;
             this.proxyManager = proxyManager;

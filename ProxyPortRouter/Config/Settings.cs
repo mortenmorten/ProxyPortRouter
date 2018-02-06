@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.Config
 {
     [DataContract]
-    public class Config : IConfig
+    public class Settings : ISettings
     {
         [DataMember(Name = "listenAddress")]
         public string ListenAddress { get; set; }

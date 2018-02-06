@@ -6,6 +6,7 @@ using System.Windows;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using ProxyPortRouter.Utilities;
 using ProxyPortRouter.Web;
 
 namespace ProxyPortRouter

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.Utilities
 {
     [UsedImplicitly]
     public class PortProxyController : IPortProxyController

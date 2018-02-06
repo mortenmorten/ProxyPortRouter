@@ -475,9 +475,9 @@
     </ApplicationDefinition>
     <Compile Include="ConfigFile.cs" />
     <Compile Include="IConfig.cs" />
-    <Compile Include="IPortProxyController.cs" />
+    <Compile Include="Utilities\IPortProxyController.cs" />
     <Compile Include="IPortProxyManager.cs" />
-    <Compile Include="PortProxyController.cs" />
+    <Compile Include="Utilities\PortProxyController.cs" />
     <Compile Include="Web\Controllers\EntryController.cs" />
     <Compile Include="Web\Startup.cs" />
     <Page Include="MainWindow.xaml">

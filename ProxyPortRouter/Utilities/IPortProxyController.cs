@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.Utilities
 {
     public interface IPortProxyController
     {

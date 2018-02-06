@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Mvvm;
 using ProxyPortRouter.UI;
+using ProxyPortRouter.Utilities;
 
 namespace ProxyPortRouter
 {

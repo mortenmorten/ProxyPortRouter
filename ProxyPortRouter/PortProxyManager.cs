@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using JetBrains.Annotations;
+using Prism.Mvvm;
 using ProxyPortRouter.Utilities;
 
 namespace ProxyPortRouter

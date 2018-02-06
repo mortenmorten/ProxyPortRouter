@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Mvvm;
+using ProxyPortRouter.Clients;
 using ProxyPortRouter.Config;
 using ProxyPortRouter.UI;
 using ProxyPortRouter.Utilities;
@@ -15,12 +17,20 @@ namespace ProxyPortRouter
         private ObservableCollection<CommandViewModel> commandEntries = new ObservableCollection<CommandViewModel>();
         private readonly PortProxyManager proxyManager;
         private readonly IPortProxyController proxyController;
-
+        private readonly IServiceProvider serviceProvider;
+        private readonly ISlaveClient syncClient;
+        private EntryViewModel currentEntry;
+        
         public MainWindowViewModel(IServiceProvider serviceProvider)
-        : this(serviceProvider.GetService<ISettings>(), serviceProvider.GetService<IPortProxyManager>(), serviceProvider.GetService<IPortProxyController>())
-        { }
+            : this(serviceProvider.GetService<ISettings>(),
+                   serviceProvider.GetService<IPortProxyManager>(),
+                   serviceProvider.GetService<IPortProxyController>(),
+                   serviceProvider.GetService<ISlaveClient>())
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
-        private MainWindowViewModel(ISettings config, IPortProxyManager proxyManager, IPortProxyController proxyController)
+        private MainWindowViewModel(ISettings config, IPortProxyManager proxyManager, IPortProxyController proxyController, ISlaveClient syncClient)
         {
             this.proxyManager = (PortProxyManager)proxyManager;
             this.proxyManager.PropertyChanged += (sender, args) =>
@@ -28,7 +38,7 @@ namespace ProxyPortRouter
                 switch (args.PropertyName)
                 {
                     case nameof(PortProxyManager.ConnectAddress):
-                        RaisePropertyChanged(nameof(CurrentEntry));
+                        UpdateCurrentEntry();
                         RefreshActiveEntry();
                         break;
                     case nameof(PortProxyManager.ListenAddress):
@@ -40,6 +50,8 @@ namespace ProxyPortRouter
             this.proxyController = proxyController;
 
             SetConfig(config);
+
+            this.syncClient = syncClient;
         }
 
         public ObservableCollection<CommandViewModel> CommandEntries
@@ -48,7 +60,18 @@ namespace ProxyPortRouter
             set => SetProperty(ref commandEntries, value);
         }
 
-        public EntryViewModel CurrentEntry => GetCurrentEntry();
+        public EntryViewModel CurrentEntry
+        {
+            get => currentEntry;
+
+            set
+            {
+                if (SetProperty(ref currentEntry, value))
+                {
+                    UpdateSlave();
+                }
+            }
+        }
 
         public string ListenAddress => proxyManager.ListenAddress;
 
@@ -60,10 +83,10 @@ namespace ProxyPortRouter
             proxyManager.RefreshCurrentConnectAddress();
         }
 
-        private EntryViewModel GetCurrentEntry()
+        private void UpdateCurrentEntry()
         {
             var currentAddress = proxyManager.ConnectAddress;
-            return CommandEntries.FirstOrDefault(entry => entry.Address == currentAddress) ?? new EntryViewModel(
+            CurrentEntry = CommandEntries.FirstOrDefault(entry => entry.Address == currentAddress) ?? new EntryViewModel(
                        new CommandEntry
                        {
                            Name = string.IsNullOrEmpty(currentAddress) ? "<not set>" : "<unknown>",
@@ -77,6 +100,12 @@ namespace ProxyPortRouter
             {
                 entry.IsActive = CurrentEntry == entry;
             }
+        }
+
+        private void UpdateSlave()
+        {
+            if (syncClient == null) return;
+            Task.Factory.StartNew(() => syncClient.SetCurrentEntry(CurrentEntry.Name));
         }
     }
 }

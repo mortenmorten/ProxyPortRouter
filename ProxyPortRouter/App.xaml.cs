@@ -6,6 +6,7 @@ using System.Windows;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using ProxyPortRouter.Clients;
 using ProxyPortRouter.Config;
 using ProxyPortRouter.Utilities;
 using ProxyPortRouter.Web;
@@ -17,6 +18,8 @@ namespace ProxyPortRouter
     /// </summary>
     public partial class App : Application
     {
+        private const int RestApiPort = 8080;
+
         private IWebHost webHost;
         private readonly CancellationTokenSource cts = new CancellationTokenSource();
         private Task webHostTask;
@@ -28,7 +31,7 @@ namespace ProxyPortRouter
                 .ConfigureServices(ConfigureServices)
                 .UseKestrel(options =>
                 {
-                    options.Listen(IPAddress.Any, 8080);
+                    options.Listen(IPAddress.Any, RestApiPort);
                 })
                 .Build();
         }
@@ -38,11 +41,17 @@ namespace ProxyPortRouter
             serviceCollection.AddSingleton<ISettings>(SettingsFile.Load("entries.json"));
             serviceCollection.AddSingleton<IPortProxyManager, PortProxyManager>();
             serviceCollection.AddSingleton<IPortProxyController, PortProxyController>();
+            serviceCollection.AddSingleton<ISlaveClient>(p =>
+            {
+                var syncAddress = p.GetService<IOptions>().SlaveAddress;
+                return string.IsNullOrEmpty(syncAddress) ? null : new RestClient(new Uri($"http://{syncAddress}:{RestApiPort}"));
+            });
         }
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
             IServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton<IOptions>(p => Options.Create(e.Args));
             ConfigureServices(serviceCollection);
 
             webHost = BuildWebHost(e.Args);

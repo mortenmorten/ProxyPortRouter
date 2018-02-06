@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("ProxyPortRouter")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("TV 2")]
 [assembly: AssemblyProduct("ProxyPortRouter")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright © TV 2 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

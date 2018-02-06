@@ -478,6 +478,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Clients\ISyncClient.cs" />
+    <Compile Include="Clients\RestClient.cs" />
+    <Compile Include="Config\IOptions.cs" />
+    <Compile Include="Config\Options.cs" />
     <Compile Include="Config\SettingsFile.cs" />
     <Compile Include="Config\ISettings.cs" />
     <Compile Include="Utilities\IPortProxyController.cs" />

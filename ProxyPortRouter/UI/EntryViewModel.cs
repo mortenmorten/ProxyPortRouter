@@ -1,6 +1,6 @@
 ﻿using Prism.Mvvm;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.UI
 {
     public class EntryViewModel : BindableBase
     {

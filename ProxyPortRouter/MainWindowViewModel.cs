@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Mvvm;
+using ProxyPortRouter.UI;
 
 namespace ProxyPortRouter
 {

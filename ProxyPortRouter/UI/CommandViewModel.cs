@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 using Prism.Commands;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.UI
 {
     public class CommandViewModel : EntryViewModel
     {

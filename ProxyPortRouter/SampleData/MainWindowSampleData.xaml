@@ -1,0 +1,12 @@
+﻿<app:MainWindowViewModel xmlns:app="clr-namespace:ProxyPortRouter"
+                         xmlns:ui="clr-namespace:ProxyPortRouter.UI">
+    <app:MainWindowViewModel.ListenAddress>127.0.0.2</app:MainWindowViewModel.ListenAddress>
+    <app:MainWindowViewModel.CurrentEntry>
+        <ui:EntryViewModel Name="&lt;unknown&gt;" Address="127.0.0.1"></ui:EntryViewModel>
+    </app:MainWindowViewModel.CurrentEntry>
+    <app:MainWindowViewModel.CommandEntries>
+        <ui:CommandViewModel Name="None" Address="192.168.45.21" />
+        <ui:CommandViewModel Name="News" IsActive="True" />
+        <ui:CommandViewModel Name="Sportskanalen" />
+    </app:MainWindowViewModel.CommandEntries>
+</app:MainWindowViewModel>

@@ -1,0 +1,17 @@
+﻿{
+  "listenAddress": "127.0.0.11",
+  "entries": [
+    {
+      "name": "None",
+      "command": ""
+    },
+    {
+      "name": "News",
+      "command": ""
+    },
+    {
+      "name": "Sports",
+      "command": ""
+    }
+  ]
+}

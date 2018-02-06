@@ -496,7 +496,7 @@
     <Compile Include="Utilities\ProcessRunner.cs" />
     <Compile Include="CommandViewModel.cs" />
     <Compile Include="EntryViewModel.cs" />
-    <Compile Include="JsonSerializer.cs" />
+    <Compile Include="Utilities\JsonSerializer.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

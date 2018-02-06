@@ -2,7 +2,7 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace ProxyPortRouter
+namespace ProxyPortRouter.Utilities
 {
     public static class JsonSerializer<T> where T : class
     {

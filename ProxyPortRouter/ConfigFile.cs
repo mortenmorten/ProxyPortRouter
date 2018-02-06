@@ -1,4 +1,6 @@
-﻿namespace ProxyPortRouter
+﻿using ProxyPortRouter.Utilities;
+
+namespace ProxyPortRouter
 {
     public static class ConfigFile
     {

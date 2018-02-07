@@ -1,6 +1,7 @@
-﻿namespace ProxyPortRouter.Config
+﻿namespace ProxyPortRouter.Core.Config
 {
     using System.Collections.Generic;
+
     using CommandLine;
 
     public class Options : IOptions

@@ -1,4 +1,4 @@
-﻿namespace ProxyPortRouter
+﻿namespace ProxyPortRouter.Core.Config
 {
     using System.Runtime.Serialization;
 

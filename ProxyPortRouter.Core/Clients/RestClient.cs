@@ -1,4 +1,4 @@
-﻿namespace ProxyPortRouter.Clients
+﻿namespace ProxyPortRouter.Core.Clients
 {
     using System;
     using System.Net.Http;
@@ -15,7 +15,7 @@
 
         public Task SetCurrentEntryAsync(string name)
         {
-            return this.client.PutAsync($"api/entry?name={name}", null);
+            return client.PutAsync($"api/entry?name={name}", null);
         }
 
         public void Dispose()

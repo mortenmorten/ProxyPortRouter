@@ -1,7 +1,8 @@
-﻿namespace ProxyPortRouter.Tests
+﻿namespace ProxyPortRouter.Core.Tests
 {
     using NUnit.Framework;
-    using ProxyPortRouter.Utilities;
+
+    using ProxyPortRouter.Core.Utilities;
 
     [TestFixture]
     public class TestCommandResultParser

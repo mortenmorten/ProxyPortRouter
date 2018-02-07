@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyPortRouter", "ProxyPortRouter\ProxyPortRouter.csproj", "{380A1A33-2E85-44D8-BECB-23EF2887B22C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyPortRouter.Tests", "ProxyPortRouter.Tests\ProxyPortRouter.Tests.csproj", "{CFE97F19-21D3-4915-9260-8551B7B45DF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyPortRouter.Core.Tests", "ProxyPortRouter.Core.Tests\ProxyPortRouter.Core.Tests.csproj", "{CFE97F19-21D3-4915-9260-8551B7B45DF5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{91695876-7DEB-45FC-8A50-9BD75765E446}"
 	ProjectSection(SolutionItems) = preProject

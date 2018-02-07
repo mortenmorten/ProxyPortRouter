@@ -1,4 +1,4 @@
-﻿namespace ProxyPortRouter.Utilities
+﻿namespace ProxyPortRouter.Core.Utilities
 {
     using System.Text.RegularExpressions;
 
@@ -10,7 +10,7 @@
 
         public string GetCurrentProxyAddress(string commandResult)
         {
-            var match = Regex.Match(commandResult, $"{ListenAddress}\\s+{Port}\\s+(\\S*)\\s+{Port}");
+            var match = Regex.Match(commandResult, $"{this.ListenAddress}\\s+{this.Port}\\s+(\\S*)\\s+{this.Port}");
             if (!match.Success || match.Groups.Count < 2)
             {
                 return string.Empty;

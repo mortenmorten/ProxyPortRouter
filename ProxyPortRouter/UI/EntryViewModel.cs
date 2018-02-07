@@ -2,6 +2,8 @@
 {
     using Prism.Mvvm;
 
+    using ProxyPortRouter.Core.Config;
+
     public class EntryViewModel : BindableBase
     {
         private bool isActive;

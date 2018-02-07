@@ -1,4 +1,4 @@
-﻿namespace ProxyPortRouter
+﻿namespace ProxyPortRouter.Core.Utilities
 {
     public interface IConnectAddressSetter
     {

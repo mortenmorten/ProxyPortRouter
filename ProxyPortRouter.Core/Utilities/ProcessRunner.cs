@@ -1,4 +1,4 @@
-﻿namespace ProxyPortRouter.Utilities
+﻿namespace ProxyPortRouter.Core.Utilities
 {
     using System.Diagnostics;
 

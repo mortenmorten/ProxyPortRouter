@@ -3,7 +3,9 @@
     using System;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
-    using ProxyPortRouter.Utilities;
+
+    using ProxyPortRouter.Core.Config;
+    using ProxyPortRouter.Core.Utilities;
 
     [Route("api/[controller]")]
     public class EntryController : Controller

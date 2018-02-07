@@ -1,8 +1,8 @@
-﻿namespace ProxyPortRouter.Tests
+﻿namespace ProxyPortRouter.Core.Tests
 {
     using NUnit.Framework;
-    using ProxyPortRouter.Config;
-    using ProxyPortRouter.Utilities;
+    using ProxyPortRouter.Core.Config;
+    using ProxyPortRouter.Core.Utilities;
 
     [TestFixture]
     public class TestJsonSerializer

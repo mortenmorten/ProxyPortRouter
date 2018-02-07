@@ -1,4 +1,4 @@
-﻿namespace ProxyPortRouter.Clients
+﻿namespace ProxyPortRouter.Core.Clients
 {
     using System.Threading.Tasks;
 

@@ -8,9 +8,10 @@
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
-    using ProxyPortRouter.Clients;
-    using ProxyPortRouter.Config;
-    using ProxyPortRouter.Utilities;
+
+    using ProxyPortRouter.Core.Clients;
+    using ProxyPortRouter.Core.Config;
+    using ProxyPortRouter.Core.Utilities;
     using ProxyPortRouter.Web;
 
     /// <summary>

@@ -2,7 +2,9 @@
 {
     using System.Windows.Input;
     using Prism.Commands;
-    using ProxyPortRouter.Utilities;
+
+    using ProxyPortRouter.Core.Config;
+    using ProxyPortRouter.Core.Utilities;
 
     public class CommandViewModel : EntryViewModel
     {

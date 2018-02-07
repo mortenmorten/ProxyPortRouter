@@ -1,9 +1,9 @@
-﻿namespace ProxyPortRouter.Config
+﻿namespace ProxyPortRouter.Core.Config
 {
     using System;
     using System.IO;
-    using System.Windows;
-    using ProxyPortRouter.Utilities;
+
+    using ProxyPortRouter.Core.Utilities;
 
     public static class SettingsFile
     {

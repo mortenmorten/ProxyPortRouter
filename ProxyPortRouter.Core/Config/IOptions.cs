@@ -1,4 +1,4 @@
-﻿namespace ProxyPortRouter.Config
+﻿namespace ProxyPortRouter.Core.Config
 {
     public interface IOptions
     {

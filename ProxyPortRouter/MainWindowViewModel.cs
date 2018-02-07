@@ -6,10 +6,11 @@
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Prism.Mvvm;
-    using ProxyPortRouter.Clients;
-    using ProxyPortRouter.Config;
+
+    using ProxyPortRouter.Core.Clients;
+    using ProxyPortRouter.Core.Config;
+    using ProxyPortRouter.Core.Utilities;
     using ProxyPortRouter.UI;
-    using ProxyPortRouter.Utilities;
 
     public class MainWindowViewModel
         : BindableBase

@@ -7,8 +7,8 @@
     <ProjectGuid>{CFE97F19-21D3-4915-9260-8551B7B45DF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProxyPortRouter.Tests</RootNamespace>
-    <AssemblyName>ProxyPortRouter.Tests</AssemblyName>
+    <RootNamespace>ProxyPortRouter.Core.Tests</RootNamespace>
+    <AssemblyName>ProxyPortRouter.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -77,12 +77,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProxyPortRouter\ProxyPortRouter.csproj">
-      <Project>{380a1a33-2e85-44d8-becb-23ef2887b22c}</Project>
-      <Name>ProxyPortRouter</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="entries.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -92,6 +86,12 @@
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProxyPortRouter.Core\ProxyPortRouter.Core.csproj">
+      <Project>{648b3662-f853-4439-9c76-767a9ee53fce}</Project>
+      <Name>ProxyPortRouter.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

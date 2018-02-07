@@ -1,10 +1,11 @@
-﻿using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
-
-namespace ProxyPortRouter.Utilities
+﻿namespace ProxyPortRouter.Utilities
 {
-    public static class JsonSerializer<T> where T : class
+    using System.IO;
+    using System.Runtime.Serialization.Json;
+    using System.Text;
+
+    public static class JsonSerializer<T>
+        where T : class
     {
         public static T Deserialize(string fileName)
         {

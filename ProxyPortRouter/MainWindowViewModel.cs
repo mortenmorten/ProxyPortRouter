@@ -1,31 +1,32 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Prism.Mvvm;
-using ProxyPortRouter.Clients;
-using ProxyPortRouter.Config;
-using ProxyPortRouter.UI;
-using ProxyPortRouter.Utilities;
-
-namespace ProxyPortRouter
+﻿namespace ProxyPortRouter
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.DependencyInjection;
+    using Prism.Mvvm;
+    using ProxyPortRouter.Clients;
+    using ProxyPortRouter.Config;
+    using ProxyPortRouter.UI;
+    using ProxyPortRouter.Utilities;
+
     public class MainWindowViewModel
         : BindableBase
     {
-        private ObservableCollection<CommandViewModel> commandEntries = new ObservableCollection<CommandViewModel>();
         private readonly PortProxyManager proxyManager;
         private readonly IPortProxyController proxyController;
         private readonly IServiceProvider serviceProvider;
         private readonly ISlaveClient syncClient;
+        private ObservableCollection<CommandViewModel> commandEntries = new ObservableCollection<CommandViewModel>();
         private EntryViewModel currentEntry;
-        
+
         public MainWindowViewModel(IServiceProvider serviceProvider)
-            : this(serviceProvider.GetService<ISettings>(),
-                   serviceProvider.GetService<IPortProxyManager>(),
-                   serviceProvider.GetService<IPortProxyController>(),
-                   serviceProvider.GetService<ISlaveClient>())
+            : this(
+                serviceProvider.GetService<ISettings>(),
+                serviceProvider.GetService<IPortProxyManager>(),
+                serviceProvider.GetService<IPortProxyController>(),
+                serviceProvider.GetService<ISlaveClient>())
         {
             this.serviceProvider = serviceProvider;
         }
@@ -104,8 +105,12 @@ namespace ProxyPortRouter
 
         private void UpdateSlave()
         {
-            if (syncClient == null) return;
-            Task.Factory.StartNew(() => syncClient.SetCurrentEntry(CurrentEntry.Name));
+            if (syncClient == null)
+            {
+                return;
+            }
+
+            Task.Factory.StartNew(() => syncClient.SetCurrentEntryAsync(CurrentEntry.Name));
         }
     }
 }

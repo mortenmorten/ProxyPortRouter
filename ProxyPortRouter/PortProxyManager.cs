@@ -1,9 +1,9 @@
-﻿using JetBrains.Annotations;
-using Prism.Mvvm;
-using ProxyPortRouter.Utilities;
-
-namespace ProxyPortRouter
+﻿namespace ProxyPortRouter
 {
+    using JetBrains.Annotations;
+    using Prism.Mvvm;
+    using ProxyPortRouter.Utilities;
+
     public class PortProxyManager : BindableBase, IConnectAddressSetter, IPortProxyManager
     {
         private string listenAddress;
@@ -24,15 +24,16 @@ namespace ProxyPortRouter
         public void RefreshCurrentConnectAddress()
         {
             var parser = new CommandResultParser { ListenAddress = ListenAddress };
-            ConnectAddress = parser.GetCurrentProxyAddress(ProcessRunner.Run(NetshCommandFactory.Executable,
+            ConnectAddress = parser.GetCurrentProxyAddress(ProcessRunner.Run(
+                NetshCommandFactory.Executable,
                 NetshCommandFactory.GetShowCommandArguments()));
         }
 
         public void SetConnectAddress(string address)
         {
-            ProcessRunner.Run(NetshCommandFactory.Executable, string.IsNullOrEmpty(address)
-                ? NetshCommandFactory.GetDeleteCommandArguments(listenAddress)
-                : NetshCommandFactory.GetAddCommandArguments(listenAddress, address));
+            ProcessRunner.Run(
+                NetshCommandFactory.Executable,
+                string.IsNullOrEmpty(address) ? NetshCommandFactory.GetDeleteCommandArguments(listenAddress) : NetshCommandFactory.GetAddCommandArguments(listenAddress, address));
             RefreshCurrentConnectAddress();
         }
     }

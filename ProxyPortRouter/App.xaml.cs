@@ -1,18 +1,18 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using ProxyPortRouter.Clients;
-using ProxyPortRouter.Config;
-using ProxyPortRouter.Utilities;
-using ProxyPortRouter.Web;
-
-namespace ProxyPortRouter
+﻿namespace ProxyPortRouter
 {
+    using System;
+    using System.Net;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.DependencyInjection;
+    using ProxyPortRouter.Clients;
+    using ProxyPortRouter.Config;
+    using ProxyPortRouter.Utilities;
+    using ProxyPortRouter.Web;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -20,9 +20,15 @@ namespace ProxyPortRouter
     {
         private const int RestApiPort = 8080;
 
-        private IWebHost webHost;
         private readonly CancellationTokenSource cts = new CancellationTokenSource();
+        private IWebHost webHost;
         private Task webHostTask;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         private static IWebHost BuildWebHost(string[] args)
         {
@@ -65,15 +71,13 @@ namespace ProxyPortRouter
             cts.Cancel();
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         private void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+            {
+                return;
+            }
+
             cts.Dispose();
             webHost?.Dispose();
             webHostTask?.Dispose();

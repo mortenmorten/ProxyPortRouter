@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using CommandLine;
-
-namespace ProxyPortRouter.Config
+﻿namespace ProxyPortRouter.Config
 {
+    using System.Collections.Generic;
+    using CommandLine;
+
     public class Options : IOptions
     {
         [Option('s', "slave", HelpText = "Address to slave")]

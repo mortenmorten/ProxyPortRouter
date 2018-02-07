@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using ProxyPortRouter.Utilities;
-
-namespace ProxyPortRouter.Web.Controllers
+﻿namespace ProxyPortRouter.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Mvc;
+    using ProxyPortRouter.Utilities;
+
     [Route("api/[controller]")]
     public class EntryController : Controller
     {
@@ -19,7 +19,11 @@ namespace ProxyPortRouter.Web.Controllers
         public IActionResult GetCurrent()
         {
             var entry = proxyController.GetCurrentEntry();
-            if (entry == null) return NoContent();
+            if (entry == null)
+            {
+                return NoContent();
+            }
+
             return new OkObjectResult(entry);
         }
 

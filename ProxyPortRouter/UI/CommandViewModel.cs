@@ -1,9 +1,9 @@
-﻿using System.Windows.Input;
-using Prism.Commands;
-using ProxyPortRouter.Utilities;
-
-namespace ProxyPortRouter.UI
+﻿namespace ProxyPortRouter.UI
 {
+    using System.Windows.Input;
+    using Prism.Commands;
+    using ProxyPortRouter.Utilities;
+
     public class CommandViewModel : EntryViewModel
     {
         private readonly IPortProxyController proxyController;

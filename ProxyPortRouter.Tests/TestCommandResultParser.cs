@@ -1,12 +1,13 @@
-﻿using NUnit.Framework;
-using ProxyPortRouter.Utilities;
-
-namespace ProxyPortRouter.Tests
+﻿namespace ProxyPortRouter.Tests
 {
+    using NUnit.Framework;
+    using ProxyPortRouter.Utilities;
+
     [TestFixture]
     public class TestCommandResultParser
     {
-        private readonly CommandResultParser commandResultParser = new CommandResultParser {ListenAddress = "127.0.0.11"};
+        private readonly CommandResultParser commandResultParser =
+            new CommandResultParser { ListenAddress = "127.0.0.11" };
 
         [Test]
         public void GetCurrentProxyAddress_ValidResponse_ReturnsProxyAddress()
@@ -21,6 +22,5 @@ namespace ProxyPortRouter.Tests
             const string commandResult = "\n";
             Assert.That(commandResultParser.GetCurrentProxyAddress(commandResult), Is.Empty);
         }
-
     }
 }

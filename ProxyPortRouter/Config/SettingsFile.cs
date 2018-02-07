@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using ProxyPortRouter.Utilities;
-
-namespace ProxyPortRouter.Config
+﻿namespace ProxyPortRouter.Config
 {
+    using System;
+    using System.IO;
+    using System.Windows;
+    using ProxyPortRouter.Utilities;
+
     public static class SettingsFile
     {
         public static Settings Load(string filename)
@@ -19,7 +19,8 @@ namespace ProxyPortRouter.Config
 
         private static string GetMyCommonApplicationDataFolder()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 "Proxy Port Router");
         }
     }

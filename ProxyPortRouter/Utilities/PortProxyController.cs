@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
-using ProxyPortRouter.Config;
-
-namespace ProxyPortRouter.Utilities
+﻿namespace ProxyPortRouter.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using JetBrains.Annotations;
+    using ProxyPortRouter.Config;
+
     [UsedImplicitly]
     public class PortProxyController : IPortProxyController
     {
@@ -37,7 +37,11 @@ namespace ProxyPortRouter.Utilities
         {
             var entry = GetEntries().FirstOrDefault(cmdEntry =>
                 string.Equals(cmdEntry.Name, name, StringComparison.InvariantCultureIgnoreCase));
-            if (entry == null) throw new InvalidOperationException($"Unknown entry '{name}'");
+            if (entry == null)
+            {
+                throw new InvalidOperationException($"Unknown entry '{name}'");
+            }
+
             proxyManager.SetConnectAddress(entry.Address);
         }
     }

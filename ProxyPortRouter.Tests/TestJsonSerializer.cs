@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using ProxyPortRouter.Config;
-using ProxyPortRouter.Utilities;
-
-namespace ProxyPortRouter.Tests
+﻿namespace ProxyPortRouter.Tests
 {
+    using NUnit.Framework;
+    using ProxyPortRouter.Config;
+    using ProxyPortRouter.Utilities;
+
     [TestFixture]
     public class TestJsonSerializer
     {

@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿#pragma warning disable SA1005 // Single line comments must begin with single space
+#pragma warning disable SA1009 // Closing parenthesis must be spaced correctly
+#pragma warning disable SA1111 // Closing parenthesis must be on line of last parameter
+#pragma warning disable SA1115 // Parameter must follow comma
+#pragma warning disable SA1507 // Code must not contain multiple blank lines in a row
+
+using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

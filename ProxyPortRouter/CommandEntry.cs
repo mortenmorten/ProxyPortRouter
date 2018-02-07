@@ -1,7 +1,7 @@
-﻿using System.Runtime.Serialization;
-
-namespace ProxyPortRouter
+﻿namespace ProxyPortRouter
 {
+    using System.Runtime.Serialization;
+
     [DataContract]
     public class CommandEntry
     {

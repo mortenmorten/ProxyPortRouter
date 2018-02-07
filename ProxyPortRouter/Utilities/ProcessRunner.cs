@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-
-namespace ProxyPortRouter.Utilities
+﻿namespace ProxyPortRouter.Utilities
 {
+    using System.Diagnostics;
+
     public static class ProcessRunner
     {
         public static string Run(string command, string arguments)
@@ -10,8 +10,6 @@ namespace ProxyPortRouter.Utilities
             {
                 StartInfo =
                 {
-                    //FileName = "cmd.exe",
-                    //Arguments = string.Join(" ", "/c", command, arguments),
                     FileName = command,
                     Arguments = arguments,
                     UseShellExecute = false,

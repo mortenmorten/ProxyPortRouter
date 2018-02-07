@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace ProxyPortRouter.Utilities
+﻿namespace ProxyPortRouter.Utilities
 {
+    using System.Collections.Generic;
+
     public interface IPortProxyController
     {
         IEnumerable<CommandEntry> GetEntries();

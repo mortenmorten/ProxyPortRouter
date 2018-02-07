@@ -1,7 +1,7 @@
-﻿using System.Windows;
-
-namespace ProxyPortRouter
+﻿namespace ProxyPortRouter
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

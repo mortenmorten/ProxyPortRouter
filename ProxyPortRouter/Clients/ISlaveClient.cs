@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-
-namespace ProxyPortRouter.Clients
+﻿namespace ProxyPortRouter.Clients
 {
+    using System.Threading.Tasks;
+
     public interface ISlaveClient
     {
-        Task SetCurrentEntry(string name);
+        Task SetCurrentEntryAsync(string name);
     }
 }

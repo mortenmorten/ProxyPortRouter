@@ -1,7 +1,8 @@
-﻿namespace ProxyPortRouter.Web.Controllers
+﻿namespace ProxyPortRouter.Core.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
+
     using Microsoft.AspNetCore.Mvc;
 
     using ProxyPortRouter.Core.Config;
@@ -20,10 +21,10 @@
         [HttpGet]
         public IActionResult GetCurrent()
         {
-            var entry = proxyController.GetCurrentEntry();
+            var entry = this.proxyController.GetCurrentEntry();
             if (entry == null)
             {
-                return NoContent();
+                return this.NoContent();
             }
 
             return new OkObjectResult(entry);
@@ -34,19 +35,19 @@
         {
             try
             {
-                proxyController.SetCurrentEntry(name);
-                return GetCurrent();
+                this.proxyController.SetCurrentEntry(name);
+                return this.GetCurrent();
             }
             catch (InvalidOperationException exception)
             {
-                return NotFound(exception.Message);
+                return this.NotFound(exception.Message);
             }
         }
 
         [HttpGet("list")]
         public IEnumerable<CommandEntry> GetEntries()
         {
-            return proxyController.GetEntries();
+            return this.proxyController.GetEntries();
         }
     }
 }

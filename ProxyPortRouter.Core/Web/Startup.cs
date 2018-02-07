@@ -1,6 +1,7 @@
-﻿namespace ProxyPortRouter.Web
+﻿namespace ProxyPortRouter.Core.Web
 {
     using JetBrains.Annotations;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;

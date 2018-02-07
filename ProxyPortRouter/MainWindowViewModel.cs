@@ -4,7 +4,9 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Prism.Mvvm;
 
     using ProxyPortRouter.Core.Clients;
@@ -17,7 +19,6 @@
     {
         private readonly PortProxyManager proxyManager;
         private readonly IPortProxyController proxyController;
-        private readonly IServiceProvider serviceProvider;
         private readonly ISlaveClient syncClient;
         private ObservableCollection<CommandViewModel> commandEntries = new ObservableCollection<CommandViewModel>();
         private EntryViewModel currentEntry;
@@ -29,7 +30,6 @@
                 serviceProvider.GetService<IPortProxyController>(),
                 serviceProvider.GetService<ISlaveClient>())
         {
-            this.serviceProvider = serviceProvider;
         }
 
         private MainWindowViewModel(ISettings config, IPortProxyManager proxyManager, IPortProxyController proxyController, ISlaveClient syncClient)

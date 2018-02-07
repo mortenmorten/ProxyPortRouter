@@ -1,18 +1,14 @@
 ﻿namespace ProxyPortRouterService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Diagnostics;
-    using System.Linq;
     using System.Reflection;
     using System.ServiceProcess;
-    using System.Text;
-    using System.Threading.Tasks;
+
+    using log4net;
 
     public partial class Service : ServiceBase
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public Service()
         {
             InitializeComponent();
@@ -20,10 +16,12 @@
 
         protected override void OnStart(string[] args)
         {
+            Log.Info("Proxy Port Router is starting");
         }
 
         protected override void OnStop()
         {
+            Log.Info("Proxy Port Router is stopping");
         }
     }
 }

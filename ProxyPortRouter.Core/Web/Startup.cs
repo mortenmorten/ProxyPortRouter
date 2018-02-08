@@ -6,6 +6,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
+    using Serilog;
+
     [UsedImplicitly]
     public class Startup
     {
@@ -19,6 +21,7 @@
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddDebug(LogLevel.Debug);
+            loggerFactory.AddSerilog();
             app.UseMvcWithDefaultRoute();
         }
     }

@@ -1,27 +1,32 @@
 ﻿namespace ProxyPortRouterService
 {
-    using System.Reflection;
+    using System;
+    using System.IO;
     using System.ServiceProcess;
 
-    using log4net;
+    using Serilog;
 
     public partial class Service : ServiceBase
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public Service()
         {
             InitializeComponent();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                            "Proxy Port Router",
+                            "service.log"))
+                .CreateLogger();
         }
 
         protected override void OnStart(string[] args)
         {
-            Log.Info("Proxy Port Router is starting");
+            Log.Information("Proxy Port Router is starting");
         }
 
         protected override void OnStop()
         {
-            Log.Info("Proxy Port Router is stopping");
+            Log.Information("Proxy Port Router is stopping");
         }
     }
 }

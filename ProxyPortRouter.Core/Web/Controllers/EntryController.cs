@@ -5,23 +5,22 @@
     using System.Web.Http;
 
     using ProxyPortRouter.Core.Config;
-    using ProxyPortRouter.Core.Utilities;
 
     [RoutePrefix("api/entry")]
     public class EntryController : ApiController
     {
-        private readonly IPortProxyController proxyController;
+        private readonly IBackend backend;
 
-        public EntryController(IPortProxyController proxyController)
+        public EntryController(IBackend backend)
         {
-            this.proxyController = proxyController;
+            this.backend = backend;
         }
 
         [Route("")]
         [HttpGet]
         public IHttpActionResult GetCurrent()
         {
-            var entry = proxyController.GetCurrentEntry();
+            var entry = backend.GetCurrent();
             if (entry == null)
             {
                 return Ok();
@@ -36,8 +35,8 @@
         {
             try
             {
-                this.proxyController.SetCurrentEntry(name);
-                return this.GetCurrent();
+                backend.SetCurrent(name);
+                return GetCurrent();
             }
             catch (InvalidOperationException)
             {
@@ -49,7 +48,7 @@
         [HttpGet]
         public IEnumerable<CommandEntry> GetEntries()
         {
-            return this.proxyController.GetEntries();
+            return backend.GetEntries();
         }
     }
 }

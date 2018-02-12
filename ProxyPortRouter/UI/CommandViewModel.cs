@@ -3,20 +3,20 @@
     using System.Windows.Input;
     using Prism.Commands;
 
+    using ProxyPortRouter.Core;
     using ProxyPortRouter.Core.Config;
-    using ProxyPortRouter.Core.Utilities;
 
     public class CommandViewModel : EntryViewModel
     {
-        private readonly IPortProxyController proxyController;
+        private readonly IBackend backend;
 
-        public CommandViewModel(CommandEntry model, IPortProxyController proxyController)
+        public CommandViewModel(CommandEntry model, IBackend backend)
             : base(model)
         {
-            this.proxyController = proxyController;
+            this.backend = backend;
         }
 
         public ICommand ExecuteCommand =>
-            new DelegateCommand(() => proxyController?.SetCurrentEntry(Model.Name));
+            new DelegateCommand(() => backend?.SetCurrent(Model.Name));
     }
 }

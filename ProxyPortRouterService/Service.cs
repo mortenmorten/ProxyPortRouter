@@ -5,6 +5,7 @@
     using System.ServiceProcess;
 
     using ProxyPortRouter.Core;
+    using ProxyPortRouter.Core.Web;
 
     using Serilog;
 
@@ -14,6 +15,8 @@
 
         public Service()
         {
+            ServiceProviderBuilder.SetupBackendService(true);
+
             InitializeComponent();
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(Path.Combine(

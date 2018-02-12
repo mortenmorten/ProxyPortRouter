@@ -3,7 +3,10 @@
     using System;
     using System.Windows;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using ProxyPortRouter.Core;
+    using ProxyPortRouter.Core.Web;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -11,6 +14,11 @@
     public partial class App : Application, IDisposable
     {
         private Main main;
+
+        public App()
+        {
+            ServiceProviderBuilder.SetupBackendService(true);
+        }
 
         public void Dispose()
         {

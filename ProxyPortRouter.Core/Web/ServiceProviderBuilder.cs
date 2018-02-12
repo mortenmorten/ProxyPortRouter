@@ -12,22 +12,24 @@
 
     public static class ServiceProviderBuilder
     {
-        public static IServiceProvider ServiceProvider { get; private set; }
+        private static readonly ServiceCollection Services = new ServiceCollection();
 
-        public static IServiceProvider BuildServiceProvider(string[] args)
+        static ServiceProviderBuilder()
         {
-            var services = new ServiceCollection();
-
-            services.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData("entries.json"));
-            services.AddSingleton<IPortProxyManager, PortProxyManager>();
-            services.AddSingleton<IPortProxyController, PortProxyController>();
-            services.AddSingleton<IOptions>(p => Options.Create(args));
-            services.AddSingleton<ISlaveClient>(p =>
+            Services.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData("entries.json"));
+            Services.AddSingleton<IPortProxyController, PortProxyController>();
+            Services.AddSingleton<IOptions>(p => Options.Create(Environment.GetCommandLineArgs()));
+            Services.AddSingleton<ISlaveClient>(p =>
                 {
                     var syncAddress = p.GetService<IOptions>()?.SlaveAddress;
                     return string.IsNullOrEmpty(syncAddress) ? null : new RestClient(new Uri($"http://{syncAddress}:{8080}"));
                 });
+        }
 
+        public static IServiceProvider ServiceProvider { get; private set; }
+
+        public static IServiceProvider BuildServiceProvider()
+        {
             // For WebApi controllers, you may want to have a bit of reflection
             var controllerTypes = Assembly.GetExecutingAssembly().GetExportedTypes()
                 .Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition)
@@ -35,12 +37,25 @@
                             || t.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase));
             foreach (var type in controllerTypes)
             {
-                services.AddTransient(type);
+                Services.AddTransient(type);
             }
 
             // It is only that you need to get service provider in the end
-            ServiceProvider = services.BuildServiceProvider();
+            ServiceProvider = Services.BuildServiceProvider();
             return ServiceProvider;
+        }
+
+        public static void SetupBackendService(bool useLocal = false)
+        {
+            if (useLocal)
+            {
+                Services.AddSingleton<IBackend, LocalBackend>();
+            }
+            else
+            {
+                // Services.AddSingleton<IBackend, WebBackend>();
+                Services.AddSingleton<IBackend, LocalBackend>();
+            }
         }
     }
 }

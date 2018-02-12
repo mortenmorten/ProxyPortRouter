@@ -1,6 +1,5 @@
 ﻿namespace ProxyPortRouter.Core.Web
 {
-    using System;
     using System.Web.Http;
 
     using JetBrains.Annotations;
@@ -22,7 +21,7 @@
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
 
-            config.DependencyResolver = new Resolver(ServiceProviderBuilder.BuildServiceProvider(Environment.GetCommandLineArgs()));
+            config.DependencyResolver = new Resolver(ServiceProviderBuilder.BuildServiceProvider());
 
             app.UseWebApi(config);
         }

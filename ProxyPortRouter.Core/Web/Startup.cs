@@ -1,28 +1,30 @@
 ﻿namespace ProxyPortRouter.Core.Web
 {
+    using System;
+    using System.Web.Http;
+
     using JetBrains.Annotations;
 
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
+    using Owin;
 
-    using Serilog;
-
-    [UsedImplicitly]
     public class Startup
     {
         [UsedImplicitly]
-        public void ConfigureServices(IServiceCollection services)
+        public void Configuration(IAppBuilder app)
         {
-            services.AddMvc();
-        }
+            // Configure Web API for self-host.
+            var config = new HttpConfiguration();
 
-        [UsedImplicitly]
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddDebug(LogLevel.Debug);
-            loggerFactory.AddSerilog();
-            app.UseMvcWithDefaultRoute();
+            config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional });
+
+            config.DependencyResolver = new Resolver(ServiceProviderBuilder.BuildServiceProvider(Environment.GetCommandLineArgs()));
+
+            app.UseWebApi(config);
         }
     }
 }

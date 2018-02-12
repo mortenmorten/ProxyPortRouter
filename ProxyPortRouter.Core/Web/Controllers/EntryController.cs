@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using Microsoft.AspNetCore.Mvc;
+    using System.Web.Http;
 
     using ProxyPortRouter.Core.Config;
     using ProxyPortRouter.Core.Utilities;
 
-    [Route("api/[controller]")]
-    public class EntryController : Controller
+    [RoutePrefix("api/entry")]
+    public class EntryController : ApiController
     {
         private readonly IPortProxyController proxyController;
 
@@ -18,33 +17,36 @@
             this.proxyController = proxyController;
         }
 
+        [Route("")]
         [HttpGet]
-        public IActionResult GetCurrent()
+        public IHttpActionResult GetCurrent()
         {
-            var entry = this.proxyController.GetCurrentEntry();
+            var entry = proxyController.GetCurrentEntry();
             if (entry == null)
             {
-                return this.NoContent();
+                return Ok();
             }
 
-            return new OkObjectResult(entry);
+            return Ok(entry);
         }
 
+        [Route("")]
         [HttpPut]
-        public IActionResult PutCurrent(string name)
+        public IHttpActionResult PutCurrent(string name)
         {
             try
             {
                 this.proxyController.SetCurrentEntry(name);
                 return this.GetCurrent();
             }
-            catch (InvalidOperationException exception)
+            catch (InvalidOperationException)
             {
-                return this.NotFound(exception.Message);
+                return NotFound();
             }
         }
 
-        [HttpGet("list")]
+        [Route("list")]
+        [HttpGet]
         public IEnumerable<CommandEntry> GetEntries()
         {
             return this.proxyController.GetEntries();

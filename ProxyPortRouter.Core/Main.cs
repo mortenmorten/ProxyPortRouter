@@ -1,28 +1,19 @@
 ﻿namespace ProxyPortRouter.Core
 {
     using System;
-    using System.Net;
-    using System.Threading;
-    using System.Threading.Tasks;
+    using System.Diagnostics;
 
-    using Microsoft.AspNetCore;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Owin.Hosting;
 
-    using ProxyPortRouter.Core.Clients;
-    using ProxyPortRouter.Core.Config;
-    using ProxyPortRouter.Core.Utilities;
     using ProxyPortRouter.Core.Web;
 
     public class Main : IDisposable
     {
         private const int RestApiPort = 8080;
 
-        private readonly CancellationTokenSource cts = new CancellationTokenSource();
-        private IWebHost webHost;
-        private Task webHostTask;
+        private IDisposable webHost;
 
-        public IServiceProvider Services => webHost?.Services;
+        public IServiceProvider Services => ServiceProviderBuilder.ServiceProvider;
 
         public void Dispose()
         {
@@ -32,39 +23,14 @@
 
         public void Start(string[] args)
         {
-            webHost = BuildWebHost(args);
-
-            webHostTask = webHost.RunAsync(cts.Token);
+            Trace.TraceInformation(typeof(Microsoft.Owin.Host.HttpListener.OwinHttpListener).FullName);
+            webHost = WebApp.Start<Startup>($"http://*:{RestApiPort}");
         }
 
         public void Stop()
         {
-            cts.Cancel();
-        }
-
-        private static IWebHost BuildWebHost(string[] args)
-        {
-            return WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>()
-                .ConfigureServices(sc => ConfigureServices(sc, args))
-                .UseKestrel(options =>
-                {
-                    options.Listen(IPAddress.Any, RestApiPort);
-                })
-                .Build();
-        }
-
-        private static void ConfigureServices(IServiceCollection serviceCollection, string[] args)
-        {
-            serviceCollection.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData("entries.json"));
-            serviceCollection.AddSingleton<IPortProxyManager, PortProxyManager>();
-            serviceCollection.AddSingleton<IPortProxyController, PortProxyController>();
-            serviceCollection.AddSingleton<IOptions>(p => Options.Create(args));
-            serviceCollection.AddSingleton<ISlaveClient>(p =>
-            {
-                var syncAddress = p.GetService<IOptions>()?.SlaveAddress;
-                return string.IsNullOrEmpty(syncAddress) ? null : new RestClient(new Uri($"http://{syncAddress}:{RestApiPort}"));
-            });
+            webHost.Dispose();
+            webHost = null;
         }
 
         private void Dispose(bool disposing)
@@ -74,9 +40,7 @@
                 return;
             }
 
-            cts.Dispose();
             webHost?.Dispose();
-            webHostTask?.Dispose();
         }
     }
 }

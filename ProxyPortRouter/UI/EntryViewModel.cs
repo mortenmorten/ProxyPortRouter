@@ -1,10 +1,11 @@
-﻿using Prism.Mvvm;
-
-namespace ProxyPortRouter.UI
+﻿namespace ProxyPortRouter.UI
 {
+    using Prism.Mvvm;
+
+    using ProxyPortRouter.Core.Config;
+
     public class EntryViewModel : BindableBase
     {
-        protected readonly CommandEntry Model;
         private bool isActive;
 
         public EntryViewModel(CommandEntry model)
@@ -18,7 +19,10 @@ namespace ProxyPortRouter.UI
             set
             {
                 var backingName = Model.Name;
-                if (SetProperty(ref backingName, value)) Model.Name = backingName;
+                if (SetProperty(ref backingName, value))
+                {
+                    Model.Name = backingName;
+                }
             }
         }
 
@@ -29,5 +33,7 @@ namespace ProxyPortRouter.UI
             get => isActive;
             set => SetProperty(ref isActive, value);
         }
+
+        protected CommandEntry Model { get; }
     }
 }

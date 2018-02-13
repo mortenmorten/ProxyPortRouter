@@ -8,15 +8,22 @@
 
     public class CommandViewModel : EntryViewModel
     {
-        private readonly IBackend backend;
+        private readonly IBackendAsync backend;
 
-        public CommandViewModel(CommandEntry model, IBackend backend)
+        public CommandViewModel(CommandEntry model, IBackendAsync backend)
             : base(model)
         {
             this.backend = backend;
         }
 
         public ICommand ExecuteCommand =>
-            new DelegateCommand(() => backend?.SetCurrent(Model.Name));
+            new DelegateCommand(
+                async () =>
+                    {
+                        if (backend != null)
+                        {
+                            await backend.SetCurrentAsync(Model.Name).ConfigureAwait(false);
+                        }
+                    });
     }
 }

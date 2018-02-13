@@ -10,17 +10,17 @@
     using ProxyPortRouter.Core.Config;
     using ProxyPortRouter.Core.Utilities;
 
-    public class LocalBackend : IBackend
+    public class LocalBackend : IBackendAsync
     {
-        private readonly IPortProxyController proxyController;
-        private readonly ISlaveClient slaveClient;
+        private readonly IPortProxyControllerAsync proxyController;
+        private readonly ISlaveClientAsync slaveClient;
         private readonly ISettings settings;
 
         [UsedImplicitly]
         public LocalBackend(
             ISettings settings,
-            IPortProxyController proxyController,
-            ISlaveClient slaveClient)
+            IPortProxyControllerAsync proxyController,
+            ISlaveClientAsync slaveClient)
         {
             this.proxyController = proxyController;
             this.slaveClient = slaveClient;
@@ -29,42 +29,42 @@
 
         public event EventHandler CurrentChanged;
 
-        public string GetListenAddress()
+        public Task<string> GetListenAddressAsync()
         {
-            return settings.ListenAddress;
+            return Task.FromResult(settings.ListenAddress);
         }
 
-        public void SetCurrent(string name)
+        public async Task SetCurrentAsync(string name)
         {
-            var previousEntry = GetCurrent()?.Name;
-            proxyController.SetCurrentEntry(name);
+            var previousEntry = (await GetCurrentAsync().ConfigureAwait(false))?.Name;
+            await proxyController.SetCurrentEntryAsync(name).ConfigureAwait(false);
 
-            if (previousEntry != null && previousEntry != GetCurrent()?.Name)
+            if (previousEntry != null && previousEntry != (await GetCurrentAsync().ConfigureAwait(false))?.Name)
             {
                 CurrentChanged?.Invoke(this, EventArgs.Empty);
             }
 
-            UpdateSlave(name);
+            await UpdateSlaveAsync(name).ConfigureAwait(false);
         }
 
-        public CommandEntry GetCurrent()
+        public Task<CommandEntry> GetCurrentAsync()
         {
-            return proxyController.GetCurrentEntry();
+            return proxyController.GetCurrentEntryAsync();
         }
 
-        public IEnumerable<CommandEntry> GetEntries()
+        public Task<IEnumerable<CommandEntry>> GetEntriesAsync()
         {
-            return proxyController.GetEntries();
+            return proxyController.GetEntriesAsync();
         }
 
-        private void UpdateSlave(string name)
+        private async Task UpdateSlaveAsync(string name)
         {
             if (slaveClient == null)
             {
                 return;
             }
 
-            Task.Factory.StartNew(() => slaveClient.SetCurrentEntryAsync(name));
+            await slaveClient.SetCurrentEntryAsync(name).ConfigureAwait(false);
         }
     }
 }

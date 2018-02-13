@@ -4,7 +4,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    public class RestClient : ISlaveClient, IDisposable
+    public class RestClient : ISlaveClientAsync, IDisposable
     {
         private readonly HttpClient client;
 

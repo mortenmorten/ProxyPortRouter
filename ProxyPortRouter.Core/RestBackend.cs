@@ -3,15 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
-    using System.Net.Mime;
-    using System.Text;
     using System.Threading.Tasks;
 
     using JetBrains.Annotations;
 
     using ProxyPortRouter.Core.Config;
 
-    public class RestBackend : IBackend, IBackendAsync, IDisposable
+    public class RestBackend : IBackendAsync, IDisposable
     {
         private readonly HttpClient httpClient;
 
@@ -33,29 +31,14 @@
             Dispose(true);
         }
 
-        public string GetListenAddress()
-        {
-            return GetListenAddressAsync().Result;
-        }
-
         public Task<string> GetListenAddressAsync()
         {
             return GetContentAsync<string>("api/entry/listen");
         }
 
-        public CommandEntry GetCurrent()
-        {
-            return GetCurrentAsync().Result;
-        }
-
         public Task<CommandEntry> GetCurrentAsync()
         {
             return GetContentAsync<CommandEntry>("api/entry");
-        }
-
-        public void SetCurrent(string name)
-        {
-            SetCurrentAsync(name).Wait();
         }
 
         public async Task SetCurrentAsync(string name)
@@ -72,11 +55,6 @@
             {
                 CurrentChanged?.Invoke(this, EventArgs.Empty);
             }
-        }
-
-        public IEnumerable<CommandEntry> GetEntries()
-        {
-            return GetEntriesAsync().Result;
         }
 
         public Task<IEnumerable<CommandEntry>> GetEntriesAsync()

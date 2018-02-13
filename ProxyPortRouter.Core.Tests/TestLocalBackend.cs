@@ -1,6 +1,7 @@
 ﻿namespace ProxyPortRouter.Core.Tests
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using NSubstitute;
 
@@ -14,61 +15,61 @@
     public class TestLocalBackend
     {
         private readonly ISettings settings = Substitute.For<ISettings>();
-        private readonly IPortProxyController proxyController = Substitute.For<IPortProxyController>();
-        private readonly ISlaveClient slaveClient = Substitute.For<ISlaveClient>();
+        private readonly IPortProxyControllerAsync proxyController = Substitute.For<IPortProxyControllerAsync>();
+        private readonly ISlaveClientAsync slaveClient = Substitute.For<ISlaveClientAsync>();
 
         [Test]
-        public void GetListenAddress_ValidConfigInConstructor_ReturnsAddressFromConfig()
+        public async Task GetListenAddressAsync_ValidConfigInConstructor_ReturnsAddressFromConfig()
         {
             settings.ListenAddress.Returns("settingsAddress");
-            IBackend backend = new LocalBackend(settings, null, null);
-            Assert.That(backend.GetListenAddress(), Is.EqualTo("settingsAddress"));
+            IBackendAsync backend = new LocalBackend(settings, null, null);
+            Assert.That(await backend.GetListenAddressAsync().ConfigureAwait(false), Is.EqualTo("settingsAddress"));
         }
 
         [Test]
-        public void GetEntries_ValidProxyController_ReturnsEntriesFromController()
+        public async Task GetEntriesAsync_ValidProxyController_ReturnsEntriesFromController()
         {
             var entries = new List<CommandEntry> { new CommandEntry() { Name = "1" }, new CommandEntry() { Name = "2" } };
-            proxyController.GetEntries().Returns(entries);
-            IBackend backend = new LocalBackend(null, proxyController, null);
-            Assert.That(backend.GetEntries(), Is.SameAs(entries));
+            proxyController.GetEntriesAsync().Returns(entries);
+            IBackendAsync backend = new LocalBackend(null, proxyController, null);
+            Assert.That(await backend.GetEntriesAsync().ConfigureAwait(false), Is.SameAs(entries));
         }
 
         [Test]
-        public void GetCurrent_ValidProxyController_ReturnsResultFromController()
+        public async Task GetCurrentAsync_ValidProxyController_ReturnsResultFromController()
         {
             var current = new CommandEntry();
-            proxyController.GetCurrentEntry().Returns(current);
-            IBackend backend = new LocalBackend(null, proxyController, null);
-            Assert.That(backend.GetCurrent(), Is.SameAs(current));
+            proxyController.GetCurrentEntryAsync().Returns(current);
+            IBackendAsync backend = new LocalBackend(null, proxyController, null);
+            Assert.That(await backend.GetCurrentAsync().ConfigureAwait(false), Is.SameAs(current));
         }
 
         [Test]
-        public void SetCurrent_ValidProxyController_CallsProxyController()
+        public async Task SetCurrentAsync_ValidProxyController_CallsProxyController()
         {
-            IBackend backend = new LocalBackend(null, proxyController, null);
-            backend.SetCurrent("name");
-            proxyController.Received().SetCurrentEntry(Arg.Is("name"));
+            IBackendAsync backend = new LocalBackend(null, proxyController, null);
+            await backend.SetCurrentAsync("name").ConfigureAwait(false);
+            await proxyController.Received().SetCurrentEntryAsync(Arg.Is("name")).ConfigureAwait(false);
         }
 
         [Test]
-        public void SetCurrent_ValidProxyControllerValidSlaveClient_CallsSlaveClient()
+        public async Task SetCurrentAsync_ValidProxyControllerValidSlaveClient_CallsSlaveClient()
         {
-            IBackend backend = new LocalBackend(null, proxyController, slaveClient);
-            backend.SetCurrent("name");
-            slaveClient.Received().SetCurrentEntryAsync(Arg.Is("name"));
+            IBackendAsync backend = new LocalBackend(null, proxyController, slaveClient);
+            await backend.SetCurrentAsync("name").ConfigureAwait(false);
+            await slaveClient.Received().SetCurrentEntryAsync(Arg.Is("name")).ConfigureAwait(false);
         }
 
         [Test]
-        public void SetCurrent_CurrentChanges_RaisesCurrentChangedEvent()
+        public async Task SetCurrentAsync_CurrentChanges_RaisesCurrentChangedEvent()
         {
             var wasCalled = false;
-            IBackend backend = new LocalBackend(null, proxyController, slaveClient);
-            proxyController.GetCurrentEntry().Returns(
+            IBackendAsync backend = new LocalBackend(null, proxyController, slaveClient);
+            proxyController.GetCurrentEntryAsync().Returns(
                 new CommandEntry() { Name = "oldName" },
                 new CommandEntry() { Name = "newName" });
             backend.CurrentChanged += (o, e) => wasCalled = true;
-            backend.SetCurrent("newName");
+            await backend.SetCurrentAsync("newName").ConfigureAwait(false);
             Assert.That(wasCalled, Is.True);
         }
     }

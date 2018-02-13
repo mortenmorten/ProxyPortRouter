@@ -17,14 +17,14 @@
         static ServiceProviderBuilder()
         {
             Services.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData("entries.json"));
-            Services.AddSingleton<IPortProxyController, PortProxyController>();
+            Services.AddSingleton<IPortProxyControllerAsync, PortProxyController>();
             Services.AddSingleton<IOptions>(p => Options.Create(Environment.GetCommandLineArgs()));
-            Services.AddSingleton<ISlaveClient>(p =>
+            Services.AddSingleton<ISlaveClientAsync>(p =>
                 {
                     var syncAddress = p.GetService<IOptions>()?.SlaveAddress;
                     return string.IsNullOrEmpty(syncAddress) ? null : new RestClient(new Uri($"http://{syncAddress}:{8080}"));
                 });
-            Services.AddTransient<IProcessRunner, ProcessRunner>();
+            Services.AddTransient<IProcessRunnerAsync, ProcessRunner>();
         }
 
         public static IServiceProvider ServiceProvider { get; private set; }
@@ -50,11 +50,11 @@
         {
             if (useLocal)
             {
-                Services.AddSingleton<IBackend, LocalBackend>();
+                Services.AddSingleton<IBackendAsync, LocalBackend>();
             }
             else
             {
-                Services.AddSingleton<IBackend, RestBackend>();
+                Services.AddSingleton<IBackendAsync, RestBackend>();
             }
         }
     }

@@ -3,6 +3,8 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Threading;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -14,30 +16,24 @@
     public class MainWindowViewModel
         : BindableBase
     {
-        private readonly IBackend backend;
+        private readonly IBackendAsync backend;
 
+        private readonly Dispatcher guiDispatcher;
         private EntryViewModel currentEntry;
 
         public MainWindowViewModel(IServiceProvider serviceProvider)
-            : this(serviceProvider.GetService<IBackend>())
+            : this(serviceProvider.GetService<IBackendAsync>())
         {
         }
 
-        private MainWindowViewModel(IBackend backend)
+        private MainWindowViewModel(IBackendAsync backend)
         {
+            guiDispatcher = Dispatcher.CurrentDispatcher;
             this.backend = backend;
-            backend.CurrentChanged += (s, e) => UpdateCurrentEntry();
-
-            CommandEntries = new ObservableCollection<CommandViewModel>();
-            foreach (var commandEntry in backend.GetEntries())
-            {
-                CommandEntries.Add(new CommandViewModel(commandEntry, backend));
-            }
-
-            UpdateCurrentEntry();
+            backend.CurrentChanged += (s, e) => UpdateCurrentEntryAsync().ConfigureAwait(false);
         }
 
-        public ObservableCollection<CommandViewModel> CommandEntries { get; }
+        public ObservableCollection<CommandViewModel> CommandEntries { get; } = new ObservableCollection<CommandViewModel>();
 
         public EntryViewModel CurrentEntry
         {
@@ -45,11 +41,21 @@
             private set => SetProperty(ref currentEntry, value);
         }
 
-        public string ListenAddress => backend.GetListenAddress();
+        public string ListenAddress => backend.GetListenAddressAsync().Result;
 
-        private void UpdateCurrentEntry()
+        public async Task InitializeAsync()
         {
-            var current = backend.GetCurrent();
+            var entries = (await backend.GetEntriesAsync().ConfigureAwait(false))
+                .Select(entry => new CommandViewModel(entry, backend));
+
+            guiDispatcher.Invoke(() => CommandEntries.AddRange(entries));
+
+            await UpdateCurrentEntryAsync().ConfigureAwait(false);
+        }
+
+        private async Task UpdateCurrentEntryAsync()
+        {
+            var current = await backend.GetCurrentAsync().ConfigureAwait(false);
             CurrentEntry = CommandEntries.FirstOrDefault(entry => entry.Name == current.Name)
                            ?? new EntryViewModel(current);
             foreach (var entry in CommandEntries)

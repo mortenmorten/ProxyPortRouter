@@ -105,7 +105,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clients\ISlaveClient.cs" />
+    <Compile Include="Clients\ISlaveClientAsync.cs" />
     <Compile Include="Clients\RestClient.cs" />
     <Compile Include="Config\CommandEntry.cs" />
     <Compile Include="Config\IOptions.cs" />
@@ -114,9 +114,7 @@
     <Compile Include="Config\Options.cs" />
     <Compile Include="Config\Settings.cs" />
     <Compile Include="Config\SettingsFile.cs" />
-    <Compile Include="IBackend.cs" />
     <Compile Include="IBackendAsync.cs" />
-    <Compile Include="IBackendEvents.cs" />
     <Compile Include="LocalBackend.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,7 +122,8 @@
     <Compile Include="Utilities\CommandResultParser.cs" />
     <Compile Include="Utilities\IConnectAddressSetter.cs" />
     <Compile Include="Utilities\IPortProxyController.cs" />
-    <Compile Include="Utilities\IProcessRunner.cs" />
+    <Compile Include="Utilities\IPortProxyControllerAsync.cs" />
+    <Compile Include="Utilities\IProcessRunnerAsync.cs" />
     <Compile Include="Utilities\JsonSerializer.cs" />
     <Compile Include="Utilities\NetshCommandFactory.cs" />
     <Compile Include="Utilities\PortProxyController.cs" />

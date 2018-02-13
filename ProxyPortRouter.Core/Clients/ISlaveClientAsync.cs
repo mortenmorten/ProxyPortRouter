@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    public interface ISlaveClient
+    public interface ISlaveClientAsync
     {
         Task SetCurrentEntryAsync(string name);
     }

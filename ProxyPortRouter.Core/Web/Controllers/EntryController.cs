@@ -1,7 +1,7 @@
 ﻿namespace ProxyPortRouter.Core.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     using ProxyPortRouter.Core.Config;
@@ -9,18 +9,18 @@
     [RoutePrefix("api/entry")]
     public class EntryController : ApiController
     {
-        private readonly IBackend backend;
+        private readonly IBackendAsync backend;
 
-        public EntryController(IBackend backend)
+        public EntryController(IBackendAsync backend)
         {
             this.backend = backend;
         }
 
         [Route("")]
         [HttpGet]
-        public IHttpActionResult GetCurrent()
+        public async Task<IHttpActionResult> GetCurrentAsync()
         {
-            var entry = backend.GetCurrent();
+            var entry = await backend.GetCurrentAsync().ConfigureAwait(false);
             if (entry == null)
             {
                 return Ok();
@@ -31,12 +31,12 @@
 
         [Route("")]
         [HttpPut]
-        public IHttpActionResult PutCurrent([FromBody] NameEntry entry)
+        public async Task<IHttpActionResult> PutCurrentAsync([FromBody] NameEntry entry)
         {
             try
             {
-                backend.SetCurrent(entry?.Name);
-                return GetCurrent();
+                await backend.SetCurrentAsync(entry?.Name).ConfigureAwait(false);
+                return await GetCurrentAsync().ConfigureAwait(false);
             }
             catch (InvalidOperationException)
             {
@@ -46,16 +46,16 @@
 
         [Route("list")]
         [HttpGet]
-        public IHttpActionResult GetEntries()
+        public async Task<IHttpActionResult> GetEntriesAsync()
         {
-            return Ok(backend.GetEntries());
+            return Ok(await backend.GetEntriesAsync().ConfigureAwait(false));
         }
 
         [Route("listen")]
         [HttpGet]
-        public IHttpActionResult GetListenAddress()
+        public async Task<IHttpActionResult> GetListenAddressAsync()
         {
-            return Ok(backend.GetListenAddress());
+            return Ok(await backend.GetListenAddressAsync().ConfigureAwait(true));
         }
     }
 }

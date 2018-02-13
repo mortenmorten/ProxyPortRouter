@@ -1,31 +1,41 @@
 ﻿namespace ProxyPortRouter.Core.Utilities
 {
     using System.Diagnostics;
+    using System.Threading.Tasks;
 
     using JetBrains.Annotations;
 
     [UsedImplicitly]
-    public class ProcessRunner : IProcessRunner
+    public class ProcessRunner : IProcessRunnerAsync
     {
-        public string Run(string command, string arguments)
+        public Task<string> RunAsync(string command, string arguments)
         {
+            var tcs = new TaskCompletionSource<string>();
+
             var process = new Process
-            {
-                StartInfo =
+                              {
+                                  StartInfo =
+                                      {
+                                          FileName = command,
+                                          Arguments = arguments,
+                                          UseShellExecute = false,
+                                          RedirectStandardOutput = true,
+                                          RedirectStandardError = true,
+                                          CreateNoWindow = true,
+                                      },
+                                  EnableRaisingEvents = true
+                              };
+
+            process.Exited += (sender, args) =>
                 {
-                    FileName = command,
-                    Arguments = arguments,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                }
-            };
+                    var result = process.StandardOutput.ReadToEnd();
+                    var error = process.StandardError.ReadToEnd();
+                    tcs.SetResult(process.ExitCode == 0 || string.IsNullOrEmpty(error) ? result : error);
+                };
+
             process.Start();
-            process.WaitForExit();
-            var result = process.StandardOutput.ReadToEnd();
-            var error = process.StandardError.ReadToEnd();
-            return process.ExitCode == 0 || string.IsNullOrEmpty(error) ? result : error;
+
+            return tcs.Task;
         }
     }
 }

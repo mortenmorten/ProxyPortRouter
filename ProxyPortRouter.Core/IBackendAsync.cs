@@ -1,12 +1,15 @@
 ﻿namespace ProxyPortRouter.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using ProxyPortRouter.Core.Config;
 
-    public interface IBackendAsync : IBackendEvents
+    public interface IBackendAsync
     {
+        event EventHandler CurrentChanged;
+
         Task<string> GetListenAddressAsync();
 
         Task<CommandEntry> GetCurrentAsync();

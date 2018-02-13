@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Web.Http.Results;
 
     using NSubstitute;
@@ -14,55 +15,60 @@
     [TestFixture]
     public class TestEntryController
     {
-        private readonly IBackend backend = Substitute.For<IBackend>();
+        private readonly IBackendAsync backend = Substitute.For<IBackendAsync>();
 
         [Test]
-        public void GetEntries_ValidBackend_ReturnsEntriesFromBackend()
+        public async Task GetEntriesAsync_ValidBackend_ReturnsEntriesFromBackend()
         {
             var entries = new List<CommandEntry> { new CommandEntry() { Name = "1" }, new CommandEntry() { Name = "2" } };
-            backend.GetEntries().Returns(entries);
+            backend.GetEntriesAsync().Returns(entries);
             var entryController = new EntryController(backend);
-            var contentResult = entryController.GetEntries() as OkNegotiatedContentResult<IEnumerable<CommandEntry>>;
+            var contentResult =
+                await entryController.GetEntriesAsync().ConfigureAwait(false) as
+                    OkNegotiatedContentResult<IEnumerable<CommandEntry>>;
             Assert.That(contentResult, Is.Not.Null);
             Assert.That(contentResult.Content, Is.EquivalentTo(entries));
         }
 
         [Test]
-        public void GetCurrent_ValidBackend_ReturnsCurrentFromBackend()
+        public async Task GetCurrentAsync_ValidBackend_ReturnsCurrentFromBackend()
         {
-            backend.GetCurrent().Returns(new CommandEntry() { Name = "backendCurrent" });
+            backend.GetCurrentAsync().Returns(new CommandEntry() { Name = "backendCurrent" });
             var entryController = new EntryController(backend);
-            var contentResult = entryController.GetCurrent() as OkNegotiatedContentResult<CommandEntry>;
+            var contentResult = await entryController.GetCurrentAsync().ConfigureAwait(false) as OkNegotiatedContentResult<CommandEntry>;
             Assert.That(contentResult, Is.Not.Null);
             Assert.That(contentResult.Content.Name, Is.EqualTo("backendCurrent"));
         }
 
         [Test]
-        public void GetCurrent_ValidBackendCurrentIsNull_ReturnsOkAndEmptyContent()
+        public async Task GetCurrentAsync_ValidBackendCurrentIsNull_ReturnsOkAndEmptyContent()
         {
-            backend.GetCurrent().Returns((CommandEntry)null);
+            backend.GetCurrentAsync().Returns((CommandEntry)null);
             var entryController = new EntryController(backend);
-            var contentResult = entryController.GetCurrent() as OkResult;
+            var contentResult = await entryController.GetCurrentAsync().ConfigureAwait(false) as OkResult;
             Assert.That(contentResult, Is.Not.Null);
         }
 
         [Test]
-        public void PutCurrent_ValidBackend_CallsSetCurrentOnBackend()
+        public async Task PutCurrentAsync_ValidBackend_CallsSetCurrentOnBackend()
         {
-            backend.GetCurrent().Returns(new CommandEntry() { Name = "backendCurrent" });
+            backend.GetCurrentAsync().Returns(new CommandEntry() { Name = "backendCurrent" });
             var entryController = new EntryController(backend);
-            var contentResult = entryController.PutCurrent(new NameEntry("name")) as OkNegotiatedContentResult<CommandEntry>;
+            var contentResult =
+                await entryController.PutCurrentAsync(new NameEntry("name")).ConfigureAwait(false) as
+                    OkNegotiatedContentResult<CommandEntry>;
             Assert.That(contentResult, Is.Not.Null);
             Assert.That(contentResult.Content.Name, Is.EqualTo("backendCurrent"));
-            backend.Received().SetCurrent(Arg.Is("name"));
+            await backend.Received().SetCurrentAsync(Arg.Is("name")).ConfigureAwait(false);
         }
 
         [Test]
-        public void PutCurrent_ValidBackendSetCurrentNotFound_ReturnsNotFoundResult()
+        public async Task PutCurrentAsync_ValidBackendSetCurrentNotFound_ReturnsNotFoundResult()
         {
-            backend.When(b => b.SetCurrent("name")).Throw<InvalidOperationException>();
+            backend.When(b => b.SetCurrentAsync("name")).Throw<InvalidOperationException>();
             var entryController = new EntryController(backend);
-            var notFoundResult = entryController.PutCurrent(new NameEntry("name")) as NotFoundResult;
+            var notFoundResult =
+                await entryController.PutCurrentAsync(new NameEntry("name")).ConfigureAwait(false) as NotFoundResult;
             Assert.That(notFoundResult, Is.Not.Null);
         }
     }

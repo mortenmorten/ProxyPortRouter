@@ -46,9 +46,9 @@
 
         [Route("list")]
         [HttpGet]
-        public IEnumerable<CommandEntry> GetEntries()
+        public IHttpActionResult GetEntries()
         {
-            return backend.GetEntries();
+            return Ok(backend.GetEntries());
         }
     }
 }

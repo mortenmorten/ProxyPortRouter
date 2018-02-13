@@ -110,13 +110,17 @@
     <Compile Include="Config\CommandEntry.cs" />
     <Compile Include="Config\IOptions.cs" />
     <Compile Include="Config\ISettings.cs" />
+    <Compile Include="Config\NameEntry.cs" />
     <Compile Include="Config\Options.cs" />
     <Compile Include="Config\Settings.cs" />
     <Compile Include="Config\SettingsFile.cs" />
     <Compile Include="IBackend.cs" />
+    <Compile Include="IBackendAsync.cs" />
+    <Compile Include="IBackendEvents.cs" />
     <Compile Include="LocalBackend.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestBackend.cs" />
     <Compile Include="Utilities\CommandResultParser.cs" />
     <Compile Include="Utilities\IConnectAddressSetter.cs" />
     <Compile Include="Utilities\IPortProxyController.cs" />

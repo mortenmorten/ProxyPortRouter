@@ -54,8 +54,7 @@
             }
             else
             {
-                // Services.AddSingleton<IBackend, WebBackend>();
-                Services.AddSingleton<IBackend, LocalBackend>();
+                Services.AddSingleton<IBackend, RestBackend>();
             }
         }
     }

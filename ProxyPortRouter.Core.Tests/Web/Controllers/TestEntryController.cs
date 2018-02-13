@@ -51,7 +51,7 @@
         {
             backend.GetCurrent().Returns(new CommandEntry() { Name = "backendCurrent" });
             var entryController = new EntryController(backend);
-            var contentResult = entryController.PutCurrent("name") as OkNegotiatedContentResult<CommandEntry>;
+            var contentResult = entryController.PutCurrent(new NameEntry("name")) as OkNegotiatedContentResult<CommandEntry>;
             Assert.That(contentResult, Is.Not.Null);
             Assert.That(contentResult.Content.Name, Is.EqualTo("backendCurrent"));
             backend.Received().SetCurrent(Arg.Is("name"));
@@ -62,7 +62,7 @@
         {
             backend.When(b => b.SetCurrent("name")).Throw<InvalidOperationException>();
             var entryController = new EntryController(backend);
-            var notFoundResult = entryController.PutCurrent("name") as NotFoundResult;
+            var notFoundResult = entryController.PutCurrent(new NameEntry("name")) as NotFoundResult;
             Assert.That(notFoundResult, Is.Not.Null);
         }
     }

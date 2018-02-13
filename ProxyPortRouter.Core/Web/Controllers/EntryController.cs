@@ -31,11 +31,11 @@
 
         [Route("")]
         [HttpPut]
-        public IHttpActionResult PutCurrent(string name)
+        public IHttpActionResult PutCurrent([FromBody] NameEntry entry)
         {
             try
             {
-                backend.SetCurrent(name);
+                backend.SetCurrent(entry?.Name);
                 return GetCurrent();
             }
             catch (InvalidOperationException)
@@ -49,6 +49,13 @@
         public IHttpActionResult GetEntries()
         {
             return Ok(backend.GetEntries());
+        }
+
+        [Route("listen")]
+        [HttpGet]
+        public IHttpActionResult GetListenAddress()
+        {
+            return Ok(backend.GetListenAddress());
         }
     }
 }

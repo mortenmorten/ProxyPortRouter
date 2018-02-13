@@ -1,14 +1,11 @@
 ﻿namespace ProxyPortRouter.Core
 {
-    using System;
     using System.Collections.Generic;
 
     using ProxyPortRouter.Core.Config;
 
-    public interface IBackend
+    public interface IBackend : IBackendEvents
     {
-        event EventHandler CurrentChanged;
-
         string GetListenAddress();
 
         CommandEntry GetCurrent();

@@ -3,8 +3,6 @@
     using System;
     using System.Windows;
 
-    using Microsoft.Extensions.DependencyInjection;
-
     using ProxyPortRouter.Core;
     using ProxyPortRouter.Core.Web;
 
@@ -13,11 +11,9 @@
     /// </summary>
     public partial class App : Application, IDisposable
     {
-        private Main main;
-
         public App()
         {
-            ServiceProviderBuilder.SetupBackendService(true);
+            ServiceProviderBuilder.SetupBackendService(false);
         }
 
         public void Dispose()
@@ -28,17 +24,13 @@
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            main = new Main();
-            main.Start(e.Args);
-
-            var mainWindowViewModel = new MainWindowViewModel(main.Services);
+            var mainWindowViewModel = new MainWindowViewModel(ServiceProviderBuilder.BuildServiceProvider());
             MainWindow = new MainWindow(mainWindowViewModel);
             MainWindow.Show();
         }
 
         private void OnExit(object sender, ExitEventArgs e)
         {
-            main.Stop();
         }
 
         private void Dispose(bool disposing)
@@ -47,8 +39,6 @@
             {
                 return;
             }
-
-            main.Dispose();
         }
     }
 }

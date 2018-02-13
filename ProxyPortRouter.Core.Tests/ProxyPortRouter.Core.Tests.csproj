@@ -72,13 +72,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestCommandResultParser.cs" />
-    <Compile Include="TestJsonSerializer.cs" />
+    <Compile Include="Utilities\TestCommandResultParser.cs" />
+    <Compile Include="Utilities\TestJsonSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="entries.json">
+    <None Include="TestData\entries.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -93,5 +93,6 @@
       <Name>ProxyPortRouter.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

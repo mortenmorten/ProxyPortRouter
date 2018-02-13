@@ -1,6 +1,7 @@
-﻿namespace ProxyPortRouter.Core.Tests
+﻿namespace ProxyPortRouter.Core.Tests.Utilities
 {
     using NUnit.Framework;
+
     using ProxyPortRouter.Core.Config;
     using ProxyPortRouter.Core.Utilities;
 
@@ -28,7 +29,7 @@
         public void DeserializeFromString_CommandEntriesFile_NonNullObject()
         {
             var test = JsonSerializer<Settings>.Deserialize(
-                System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, "entries.json"));
+                System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "entries.json"));
             Assert.That(test, Is.Not.Null);
             Assert.That(test.Entries, Is.Not.Empty);
             Assert.That(test.Entries[0].Name, Is.EqualTo("None"));

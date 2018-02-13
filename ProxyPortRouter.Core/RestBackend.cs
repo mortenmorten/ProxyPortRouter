@@ -8,10 +8,12 @@
     using JetBrains.Annotations;
 
     using ProxyPortRouter.Core.Config;
+    using ProxyPortRouter.Core.Utilities;
 
     public class RestBackend : IBackendAsync, IDisposable
     {
         private readonly HttpClient httpClient;
+        private readonly CurrentEntryPoller poller;
 
         [UsedImplicitly]
         public RestBackend()
@@ -22,6 +24,8 @@
         internal RestBackend(HttpClient client)
         {
             httpClient = client;
+            poller = new CurrentEntryPoller(this);
+            poller.CurrentChanged += (sender, args) => CurrentChanged?.Invoke(this, args);
         }
 
         public event EventHandler CurrentChanged;
@@ -69,6 +73,7 @@
                 return;
             }
 
+            poller?.Dispose();
             httpClient?.Dispose();
         }
 

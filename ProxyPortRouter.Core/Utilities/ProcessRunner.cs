@@ -2,9 +2,12 @@
 {
     using System.Diagnostics;
 
-    public static class ProcessRunner
+    using JetBrains.Annotations;
+
+    [UsedImplicitly]
+    public class ProcessRunner : IProcessRunner
     {
-        public static string Run(string command, string arguments)
+        public string Run(string command, string arguments)
         {
             var process = new Process
             {

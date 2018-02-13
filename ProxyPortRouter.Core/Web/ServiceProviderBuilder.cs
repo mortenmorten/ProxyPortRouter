@@ -24,6 +24,7 @@
                     var syncAddress = p.GetService<IOptions>()?.SlaveAddress;
                     return string.IsNullOrEmpty(syncAddress) ? null : new RestClient(new Uri($"http://{syncAddress}:{8080}"));
                 });
+            Services.AddTransient<IProcessRunner, ProcessRunner>();
         }
 
         public static IServiceProvider ServiceProvider { get; private set; }

@@ -120,6 +120,7 @@
     <Compile Include="Utilities\CommandResultParser.cs" />
     <Compile Include="Utilities\IConnectAddressSetter.cs" />
     <Compile Include="Utilities\IPortProxyController.cs" />
+    <Compile Include="Utilities\IProcessRunner.cs" />
     <Compile Include="Utilities\JsonSerializer.cs" />
     <Compile Include="Utilities\NetshCommandFactory.cs" />
     <Compile Include="Utilities\PortProxyController.cs" />

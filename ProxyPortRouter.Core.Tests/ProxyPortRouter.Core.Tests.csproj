@@ -96,6 +96,8 @@
     <Compile Include="Utilities\TestCommandResultParser.cs" />
     <Compile Include="Utilities\TestJsonSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\TestNetshCommandFactory.cs" />
+    <Compile Include="Utilities\TestPortProxyController.cs" />
     <Compile Include="Web\Controllers\TestEntryController.cs" />
   </ItemGroup>
   <ItemGroup>

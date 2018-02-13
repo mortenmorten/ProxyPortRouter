@@ -10,13 +10,15 @@
 
     public class PortProxyController : IPortProxyController
     {
+        private readonly IProcessRunner processRunner;
         private readonly ISettings config;
         private string currentAddress;
 
         [UsedImplicitly]
-        public PortProxyController(ISettings config)
+        public PortProxyController(ISettings config, IProcessRunner processRunner)
         {
             this.config = config;
+            this.processRunner = processRunner;
             RefreshCurrentConnectAddress();
         }
 
@@ -27,7 +29,7 @@
 
         public CommandEntry GetCurrentEntry()
         {
-            return GetEntries().FirstOrDefault(entry => entry.Address == currentAddress) ?? new CommandEntry
+            return GetEntries()?.FirstOrDefault(entry => entry.Address == currentAddress) ?? new CommandEntry
             {
                 Name = string.IsNullOrEmpty(currentAddress) ? "<not set>" : "<unknown>",
                 Address = currentAddress
@@ -36,7 +38,7 @@
 
         public void SetCurrentEntry(string name)
         {
-            var entry = GetEntries().FirstOrDefault(cmdEntry =>
+            var entry = GetEntries()?.FirstOrDefault(cmdEntry =>
                 string.Equals(cmdEntry.Name, name, StringComparison.InvariantCultureIgnoreCase));
             if (entry == null)
             {
@@ -48,7 +50,7 @@
 
         private void SetConnectAddress(string address)
         {
-            ProcessRunner.Run(
+            processRunner.Run(
                 NetshCommandFactory.Executable,
                 string.IsNullOrEmpty(address) ? NetshCommandFactory.GetDeleteCommandArguments(config.ListenAddress) : NetshCommandFactory.GetAddCommandArguments(config.ListenAddress, address));
             RefreshCurrentConnectAddress();
@@ -57,7 +59,7 @@
         private void RefreshCurrentConnectAddress()
         {
             var parser = new CommandResultParser { ListenAddress = config.ListenAddress };
-            currentAddress = parser.GetCurrentProxyAddress(ProcessRunner.Run(
+            currentAddress = parser.GetCurrentProxyAddress(processRunner.Run(
                 NetshCommandFactory.Executable,
                 NetshCommandFactory.GetShowCommandArguments()));
         }

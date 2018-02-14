@@ -19,7 +19,7 @@
             GC.SuppressFinalize(this);
         }
 
-        public void Start(string[] args)
+        public void Start()
         {
             // Trick to bypass the assembly optimization of VS
             Trace.TraceInformation(typeof(Microsoft.Owin.Host.HttpListener.OwinHttpListener).FullName);

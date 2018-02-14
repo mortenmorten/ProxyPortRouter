@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using System.ServiceProcess;
 
     using ProxyPortRouter.Core;
     using ProxyPortRouter.Core.Web;
@@ -35,7 +34,7 @@
                             s =>
                                 {
                                     s.ConstructUsing(f => new Main());
-                                    s.WhenStarted(tc => tc.Start(Environment.GetCommandLineArgs()));
+                                    s.WhenStarted(tc => tc.Start());
                                     s.WhenStopped(tc => tc.Stop());
                                 });
                         x.RunAsLocalSystem();

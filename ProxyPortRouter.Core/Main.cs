@@ -13,8 +13,6 @@
 
         private IDisposable webHost;
 
-        public IServiceProvider Services => ServiceProviderBuilder.ServiceProvider;
-
         public void Dispose()
         {
             Dispose(true);
@@ -23,6 +21,7 @@
 
         public void Start(string[] args)
         {
+            // Trick to bypass the assembly optimization of VS
             Trace.TraceInformation(typeof(Microsoft.Owin.Host.HttpListener.OwinHttpListener).FullName);
             webHost = WebApp.Start<Startup>($"http://*:{RestApiPort}");
         }

@@ -1,19 +1,53 @@
 ﻿namespace ProxyPortRouterService
 {
+    using System;
+    using System.IO;
     using System.ServiceProcess;
+
+    using ProxyPortRouter.Core;
+    using ProxyPortRouter.Core.Web;
+
+    using Serilog;
+
+    using Topshelf;
 
     internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        private static void Main()
+        internal static void Main()
         {
-            var servicesToRun = new ServiceBase[]
-            {
-                new Service()
-            };
-            ServiceBase.Run(servicesToRun);
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.ColoredConsole()
+                .WriteTo.File(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                    "Proxy Port Router",
+                    "service.log"))
+                .CreateLogger();
+
+            ServiceProviderBuilder.SetupBackendService(true);
+
+            var rc = HostFactory.Run(
+                x =>
+                    {
+                        x.Service<Main>(
+                            s =>
+                                {
+                                    s.ConstructUsing(f => new Main());
+                                    s.WhenStarted(tc => tc.Start(Environment.GetCommandLineArgs()));
+                                    s.WhenStopped(tc => tc.Stop());
+                                });
+                        x.RunAsLocalSystem();
+
+                        x.SetDescription("Service for hosting a proxy port router");
+                        x.SetDisplayName("Proxy Port Router");
+                        x.SetServiceName("ProxyPortRouterService");
+                    });
+
+            // ReSharper disable once PossibleNullReferenceException
+            var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());
+            Environment.ExitCode = exitCode;
         }
     }
 }

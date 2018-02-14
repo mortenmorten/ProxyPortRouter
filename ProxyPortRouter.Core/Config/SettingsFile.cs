@@ -5,10 +5,13 @@
 
     using ProxyPortRouter.Core.Utilities;
 
+    using Serilog;
+
     public static class SettingsFile
     {
         public static Settings Load(string filename)
         {
+            Log.Information("JSON deserializing file: {Filename}", filename);
             return JsonSerializer<Settings>.Deserialize(filename);
         }
 

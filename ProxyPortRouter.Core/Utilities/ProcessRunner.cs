@@ -5,11 +5,14 @@
 
     using JetBrains.Annotations;
 
+    using Serilog;
+
     [UsedImplicitly]
     public class ProcessRunner : IProcessRunnerAsync
     {
         public Task<string> RunAsync(string command, string arguments)
         {
+            Log.Information("Running command: {Command} {Arguments}", command, arguments);
             var tcs = new TaskCompletionSource<string>();
 
             var process = new Process

@@ -7,6 +7,8 @@
 
     using ProxyPortRouter.Core.Web;
 
+    using Serilog;
+
     public class Main : IDisposable
     {
         private const int RestApiPort = 8080;
@@ -21,6 +23,8 @@
 
         public void Start()
         {
+            Log.Debug("Starting Main");
+
             // Trick to bypass the assembly optimization of VS
             Trace.TraceInformation(typeof(Microsoft.Owin.Host.HttpListener.OwinHttpListener).FullName);
             webHost = WebApp.Start<Startup>($"http://*:{RestApiPort}");
@@ -28,6 +32,7 @@
 
         public void Stop()
         {
+            Log.Debug("Stopping Main");
             webHost.Dispose();
             webHost = null;
         }

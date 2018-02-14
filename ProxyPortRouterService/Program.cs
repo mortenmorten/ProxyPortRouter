@@ -18,6 +18,7 @@
         internal static void Main()
         {
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
                 .WriteTo.ColoredConsole()
                 .WriteTo.File(Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
@@ -30,6 +31,7 @@
             var rc = HostFactory.Run(
                 x =>
                     {
+                        x.UseSerilog();
                         x.Service<Main>(
                             s =>
                                 {

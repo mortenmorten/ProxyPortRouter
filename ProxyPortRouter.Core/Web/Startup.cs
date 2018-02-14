@@ -4,7 +4,10 @@
 
     using JetBrains.Annotations;
 
+    using Microsoft.Owin.FileSystems;
     using Microsoft.Owin.Logging;
+    using Microsoft.Owin.StaticFiles;
+    using Microsoft.Owin.StaticFiles.Infrastructure;
 
     using Owin;
 
@@ -26,6 +29,21 @@
             config.DependencyResolver = new Resolver(ServiceProviderBuilder.BuildServiceProvider());
 
             app.UseWebApi(config);
+
+            var physicalFileSystem = new PhysicalFileSystem(@".\wwwroot");
+            var options = new FileServerOptions
+                              {
+                                  EnableDefaultFiles = true,
+                                  FileSystem = physicalFileSystem,
+                                  StaticFileOptions =
+                                      {
+                                          FileSystem = physicalFileSystem,
+                                          ServeUnknownFileTypes = true
+                                      },
+                                  DefaultFilesOptions = { DefaultFileNames = new[] { "index.html" } }
+                              };
+
+            app.UseFileServer(options);
         }
     }
 }

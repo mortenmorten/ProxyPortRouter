@@ -12,9 +12,6 @@ import { EntriesModule } from './entries/entries.module';
     BrowserModule,
     EntriesModule
   ],
-  providers: [
-    {provide: Window, useValue: window}
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

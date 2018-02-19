@@ -3,9 +3,13 @@
     using System;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using System.Web.Http.Cors;
 
     using ProxyPortRouter.Core.Config;
 
+    using Serilog;
+
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/entry")]
     public class EntryController : ApiController
     {
@@ -35,6 +39,7 @@
         {
             try
             {
+                Log.Information("PUT /api/entry: {@Entry}", entry);
                 await backend.SetCurrentAsync(entry?.Name).ConfigureAwait(false);
                 return await GetCurrentAsync().ConfigureAwait(false);
             }

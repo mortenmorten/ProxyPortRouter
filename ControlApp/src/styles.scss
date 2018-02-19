@@ -1,0 +1,75 @@
+/* You can add global styles to this file, and also import other style files */
+ul { list-style-type: none;}
+ul,li { padding: 0; margin: 0;}
+
+body {
+    margin: 2em;
+    line-height: 1.6em;
+    font-family: sans-serif;
+}
+.wrap {
+    max-width: 1200px;
+    margin: 7em auto;
+}
+
+h1 { font-weight: 700; font-size: 3.4em;}
+
+.align-right {
+    margin-left: auto;
+}
+
+.btn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  justify-content: space-between;
+  display: flex;
+  font-size: 1.2em;
+  transition: .2s ease all;
+  &--big {
+    font-size: 4em;
+  }
+  &--padding {
+    padding: .5em 3em;
+  }
+  &--blue {
+    border: 2px solid darkslateblue;
+    color: darkslateblue;
+    &:hover,
+    &:focus {
+      color: #fff;
+      background: darken(darkslateblue, 15%);
+    }
+  }
+}
+
+.form {
+  padding: 2.5em;
+  background: aliceblue;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  overflow: auto;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+  & input {
+    border: 2px solid grey;
+    padding: .5em;
+    font-size: 1.2em;
+    &:focus {
+      outline: 0;
+      border-color: darkslateblue;
+    }
+  }
+}
+
+.alert {
+  color: red;
+}

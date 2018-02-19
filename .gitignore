@@ -9,3 +9,4 @@ obj/
 *.user
 /ProxyPortRouterKey.snk
 /ProxyPortRouter.zip
+/ProxyPortRouter.Core/wwwroot

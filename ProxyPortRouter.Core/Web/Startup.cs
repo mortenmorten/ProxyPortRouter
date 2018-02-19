@@ -7,17 +7,23 @@
     using Microsoft.Owin.FileSystems;
     using Microsoft.Owin.Logging;
     using Microsoft.Owin.StaticFiles;
-    using Microsoft.Owin.StaticFiles.Infrastructure;
 
     using Owin;
+
+    using SerilogWeb.Owin;
 
     public class Startup
     {
         [UsedImplicitly]
         public void Configuration(IAppBuilder app)
         {
+            app.SetLoggerFactory(new SerilogWeb.Owin.LoggerFactory());
+            app.UseSerilogRequestContext();
+
             // Configure Web API for self-host.
             var config = new HttpConfiguration();
+
+            config.EnableCors();
 
             config.MapHttpAttributeRoutes();
 

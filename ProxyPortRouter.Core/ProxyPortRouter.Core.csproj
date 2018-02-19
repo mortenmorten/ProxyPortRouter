@@ -168,4 +168,11 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>If "$(ConfigurationName)" == "Release" (
+  pushd $(SolutionDir)ControlApp
+  npm run build
+  popd
+)</PreBuildEvent>
+  </PropertyGroup>
 </Project>

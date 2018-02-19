@@ -97,4 +97,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>If "$(ConfigurationName)" == "Release" (
+  powershell -Command "&amp; { Compress-Archive -Path '$(TargetDir)*' -DestinationPath '$(SolutionDir)ProxyPortRouter.zip' -Force }"
+)</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>

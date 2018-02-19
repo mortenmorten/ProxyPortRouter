@@ -27,9 +27,9 @@
         }
 
         [Test]
-        public void Constructor_ValidProcessRunner_UpdatesCurrentEntry()
+        public void Constructor_ValidProcessRunner_DoesNotUpdateCurrentEntry()
         {
-            processRunner.Received().RunAsync(
+            processRunner.DidNotReceive().RunAsync(
                 Arg.Is(NetshCommandFactory.Executable),
                 Arg.Is(NetshCommandFactory.GetShowCommandArguments()));
         }
@@ -57,6 +57,7 @@
                 Arg.Is(NetshCommandFactory.Executable),
                 Arg.Is(NetshCommandFactory.GetShowCommandArguments())).Returns("127.0.0.1 80 192.168.42.42 80");
             var tempController = new PortProxyController(settings, processRunner);
+            await tempController.RefreshCurrentConnectAddressAsync().ConfigureAwait(false);
             var currentEntry = await tempController.GetCurrentEntryAsync().ConfigureAwait(false);
             Assert.That(currentEntry, Is.Not.Null);
             Assert.That(currentEntry.Name, Is.EqualTo("<unknown>"));
@@ -71,6 +72,7 @@
                 Arg.Is(NetshCommandFactory.Executable),
                 Arg.Is(NetshCommandFactory.GetShowCommandArguments())).Returns("127.0.0.1 80 192.168.42.42 80");
             IPortProxyControllerAsync tempController = new PortProxyController(settings, processRunner);
+            await tempController.RefreshCurrentConnectAddressAsync().ConfigureAwait(false);
             var currentEntry = await tempController.GetCurrentEntryAsync().ConfigureAwait(false);
             Assert.That(currentEntry, Is.SameAs(settings.Entries[0]));
         }

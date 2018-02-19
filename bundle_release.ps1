@@ -1,1 +1,0 @@
-﻿Compress-Archive -Path .\ProxyPortRouter\bin\Release\* -Force ProxyPortRouter.zip

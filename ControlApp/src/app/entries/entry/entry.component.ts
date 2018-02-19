@@ -8,9 +8,18 @@ import { HttpEntriesService } from '../http-entries.service';
   styleUrls: ['./entry.component.scss']
 })
 export class EntryComponent implements OnInit {
+  private _entry: Entry;
+  private _current: Entry;
+
+  get entry(): Entry {
+    return this._entry;
+  }
 
   @Input()
-  entry: Entry;
+  set entry(value: Entry) {
+    this._entry = value;
+    this.updateCurrent();
+  }
 
   @HostBinding('class.entry__current')
   isCurrent: boolean;
@@ -21,12 +30,17 @@ export class EntryComponent implements OnInit {
 
   ngOnInit() {
     this.entriesService.current().subscribe((e: Entry) => {
-      this.isCurrent = e && this.entry.name === e.name;
+      this._current = e;
+      this.updateCurrent();
     });
   }
 
   @HostListener('click', ['$event'])
   public onClick(event) {
     this.entriesService.setCurrentEntry(this.entry);
+  }
+
+  private updateCurrent() {
+    this.isCurrent = this._entry && this._current && this._entry.name === this._current.name;
   }
 }

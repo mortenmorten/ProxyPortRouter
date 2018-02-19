@@ -45,6 +45,11 @@
             return GetContentAsync<CommandEntry>("api/entry");
         }
 
+        public Task InitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public async Task SetCurrentAsync(string name)
         {
             var previousEntry = (await GetCurrentAsync().ConfigureAwait(false))?.Name;

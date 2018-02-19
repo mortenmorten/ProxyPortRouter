@@ -14,6 +14,8 @@ export class HttpEntriesService {
   constructor(
     private http: HttpClient
   ) {
+    this.getEntries();
+    this.getCurrentEntry();
   }
 
   private configureOptions() {

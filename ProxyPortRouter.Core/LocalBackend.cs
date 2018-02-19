@@ -34,6 +34,11 @@
             return Task.FromResult(settings.ListenAddress);
         }
 
+        public Task InitializeAsync()
+        {
+            return proxyController.RefreshCurrentConnectAddressAsync();
+        }
+
         public async Task SetCurrentAsync(string name)
         {
             var previousEntry = (await GetCurrentAsync().ConfigureAwait(false))?.Name;

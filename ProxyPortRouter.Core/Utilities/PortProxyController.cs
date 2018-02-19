@@ -9,7 +9,7 @@
 
     using ProxyPortRouter.Core.Config;
 
-    public class PortProxyController : IPortProxyController, IPortProxyControllerAsync
+    public class PortProxyController : IPortProxyControllerAsync
     {
         private readonly IProcessRunnerAsync processRunner;
         private readonly ISettings config;
@@ -20,27 +20,11 @@
         {
             this.config = config;
             this.processRunner = processRunner;
-            InitializeAsync().Wait();
-        }
-
-        public Task InitializeAsync()
-        {
-            return RefreshCurrentConnectAddressAsync();
-        }
-
-        public IEnumerable<CommandEntry> GetEntries()
-        {
-            return GetEntriesAsync().Result;
         }
 
         public Task<IEnumerable<CommandEntry>> GetEntriesAsync()
         {
             return Task.FromResult(config.Entries.AsEnumerable());
-        }
-
-        public CommandEntry GetCurrentEntry()
-        {
-            return GetCurrentEntryAsync().Result;
         }
 
         public async Task<CommandEntry> GetCurrentEntryAsync()
@@ -51,11 +35,6 @@
                               Name = string.IsNullOrEmpty(currentAddress) ? "<not set>" : "<unknown>",
                               Address = currentAddress
                           };
-        }
-
-        public void SetCurrentEntry(string name)
-        {
-            SetCurrentEntryAsync(name).Wait();
         }
 
         public async Task SetCurrentEntryAsync(string name)
@@ -70,6 +49,15 @@
             await SetConnectAddressAsync(entry.Address).ConfigureAwait(false);
         }
 
+        public async Task RefreshCurrentConnectAddressAsync()
+        {
+            var parser = new CommandResultParser { ListenAddress = config.ListenAddress };
+            currentAddress = parser.GetCurrentProxyAddress(
+                await processRunner.RunAsync(
+                    NetshCommandFactory.Executable,
+                    NetshCommandFactory.GetShowCommandArguments()).ConfigureAwait(false));
+        }
+
         private async Task SetConnectAddressAsync(string address)
         {
             await processRunner.RunAsync(
@@ -77,15 +65,6 @@
                 string.IsNullOrEmpty(address) ? NetshCommandFactory.GetDeleteCommandArguments(config.ListenAddress) : NetshCommandFactory.GetAddCommandArguments(config.ListenAddress, address))
                 .ConfigureAwait(false);
             await RefreshCurrentConnectAddressAsync().ConfigureAwait(false);
-        }
-
-        private async Task RefreshCurrentConnectAddressAsync()
-        {
-            var parser = new CommandResultParser { ListenAddress = config.ListenAddress };
-            currentAddress = parser.GetCurrentProxyAddress(
-                await processRunner.RunAsync(
-                    NetshCommandFactory.Executable,
-                    NetshCommandFactory.GetShowCommandArguments()).ConfigureAwait(false));
         }
     }
 }

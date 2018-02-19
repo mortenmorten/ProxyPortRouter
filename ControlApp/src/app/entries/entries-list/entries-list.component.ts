@@ -19,7 +19,5 @@ export class EntriesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entriesService.getEntries();
-    this.entriesService.getCurrentEntry();
   }
 }

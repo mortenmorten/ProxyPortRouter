@@ -27,9 +27,9 @@
             Services.AddTransient<IProcessRunnerAsync, ProcessRunner>();
         }
 
-        public static IServiceProvider ServiceProvider { get; private set; }
+        public static ServiceProvider ServiceProvider { get; private set; }
 
-        public static IServiceProvider BuildServiceProvider()
+        public static ServiceProvider BuildServiceProvider()
         {
             // For WebApi controllers, you may want to have a bit of reflection
             var controllerTypes = Assembly.GetExecutingAssembly().GetExportedTypes()

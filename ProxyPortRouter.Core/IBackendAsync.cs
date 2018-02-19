@@ -14,6 +14,8 @@
 
         Task<CommandEntry> GetCurrentAsync();
 
+        Task InitializeAsync();
+
         Task SetCurrentAsync(string name);
 
         Task<IEnumerable<CommandEntry>> GetEntriesAsync();

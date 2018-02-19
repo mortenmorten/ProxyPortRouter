@@ -12,5 +12,7 @@
         Task<CommandEntry> GetCurrentEntryAsync();
 
         Task SetCurrentEntryAsync(string name);
+
+        Task RefreshCurrentConnectAddressAsync();
     }
 }

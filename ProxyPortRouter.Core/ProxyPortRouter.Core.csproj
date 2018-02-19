@@ -137,7 +137,6 @@
     <Compile Include="Utilities\CommandResultParser.cs" />
     <Compile Include="Utilities\CurrentEntryPoller.cs" />
     <Compile Include="Utilities\IConnectAddressSetter.cs" />
-    <Compile Include="Utilities\IPortProxyController.cs" />
     <Compile Include="Utilities\IPortProxyControllerAsync.cs" />
     <Compile Include="Utilities\IProcessRunnerAsync.cs" />
     <Compile Include="Utilities\JsonSerializer.cs" />

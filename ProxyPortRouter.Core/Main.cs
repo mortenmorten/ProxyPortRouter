@@ -2,7 +2,9 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Threading.Tasks;
 
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Owin.Hosting;
 
     using ProxyPortRouter.Core.Web;
@@ -28,6 +30,8 @@
             // Trick to bypass the assembly optimization of VS
             Trace.TraceInformation(typeof(Microsoft.Owin.Host.HttpListener.OwinHttpListener).FullName);
             webHost = WebApp.Start<Startup>($"http://*:{RestApiPort}");
+
+            Task.Run(() => ServiceProviderBuilder.ServiceProvider.GetService<IBackendAsync>().InitializeAsync());
         }
 
         public void Stop()
@@ -45,6 +49,7 @@
             }
 
             webHost?.Dispose();
+            Log.CloseAndFlush();
         }
     }
 }

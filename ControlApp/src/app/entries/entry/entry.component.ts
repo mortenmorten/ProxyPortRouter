@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding, HostListener } from '@angular/core';
 import { Entry } from '../entry';
 import { HttpEntriesService } from '../http-entries.service';
 
@@ -25,6 +25,7 @@ export class EntryComponent implements OnInit {
     });
   }
 
+  @HostListener('click', ['$event'])
   public onClick(event) {
     this.entriesService.setCurrentEntry(this.entry);
   }

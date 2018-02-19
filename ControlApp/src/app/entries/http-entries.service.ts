@@ -7,18 +7,13 @@ import { Subject } from 'rxjs/Subject';
 import { Entry } from './entry';
 
 @Injectable()
-export class HttpEntriesService implements OnInit  {
+export class HttpEntriesService {
   private _currentEntry = new Subject<Entry>();
   private _entries = new Subject<Entry[]>();
 
   constructor(
     private http: HttpClient
   ) {
-  }
-
-  ngOnInit() {
-    this.getEntries();
-    this.getCurrentEntry();
   }
 
   private configureOptions() {

@@ -1,0 +1,9 @@
+.entries-list {
+  display: flex;
+  list-style-type: none;
+  flex-direction: column;
+  &__item {
+    display: flex;
+    flex-direction: column;
+  }
+}

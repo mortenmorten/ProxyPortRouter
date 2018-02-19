@@ -5,18 +5,21 @@ import { Entry } from '../entry';
 @Component({
   selector: 'app-entries-list',
   templateUrl: './entries-list.component.html',
-  styleUrls: ['./entries-list.component.css']
+  styleUrls: ['./entries-list.component.scss']
 })
 export class EntriesListComponent implements OnInit {
   public entries: Entry[];
 
   constructor(
     private entriesService: HttpEntriesService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.entriesService.entries().subscribe((entries: Entry[]) => {
       this.entries = entries;
     });
+  }
+
+  ngOnInit() {
+    this.entriesService.getEntries();
+    this.entriesService.getCurrentEntry();
   }
 }

@@ -1,5 +1,7 @@
-<div>
+<div class="entries-list">
   <ul>
-    <li *ngFor="let entry of entries">{{entry.name}}</li>
+    <li *ngFor="let entry of entries" class="entries-list__item">
+      <app-entry [entry]="entry"></app-entry>
+    </li>
   </ul>
 </div>

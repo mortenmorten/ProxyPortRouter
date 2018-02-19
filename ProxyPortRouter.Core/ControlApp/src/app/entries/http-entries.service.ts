@@ -1,23 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/finally';
 
 import { Entry } from './entry';
 
 @Injectable()
-export class HttpEntriesService {
+export class HttpEntriesService implements OnInit  {
   private _currentEntry = new Subject<Entry>();
   private _entries = new Subject<Entry[]>();
-  private _baseUrl;
 
   constructor(
-    private window: Window,
     private http: HttpClient
   ) {
-    this._baseUrl = `http://${this.window.location.hostname}:8080`;
+  }
+
+  ngOnInit() {
+    this.getEntries();
+    this.getCurrentEntry();
   }
 
   private configureOptions() {
@@ -36,19 +37,23 @@ export class HttpEntriesService {
   }
 
   public getCurrentEntry(): void {
-    this.http.get<Entry>(`${this._baseUrl}/api/entry`).subscribe((e: Entry) => {
+    console.log(`GET: /api/entry`);
+    this.http.get<Entry>('/api/entry').subscribe((e: Entry) => {
       this._currentEntry.next(e);
     });
   }
 
   public getEntries(): void {
-    this.http.get<Entry[]>(`${this._baseUrl}/api/entry/list`).subscribe((e: Entry[]) => {
+    console.log(`GET: /api/entry/list`);
+    this.http.get<Entry[]>('/api/entry/list').subscribe((e: Entry[]) => {
       this._entries.next(e);
     });
   }
 
-  public setCurrentEntry(entry: Entry) {
-    return this.http.put(`${this._baseUrl}/api/entry`, entry, this.configureOptions())
-      .finally(() => this.getCurrentEntry());
+  public setCurrentEntry(entry: Entry): void {
+    console.log(`PUT: /api/entry`);
+    const body = JSON.stringify(entry);
+    this.http.put<Entry>('/api/entry', body, this.configureOptions())
+      .subscribe((e: Entry) => this._currentEntry.next(e));
   }
 }

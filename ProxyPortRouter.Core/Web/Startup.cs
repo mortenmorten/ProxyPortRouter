@@ -1,25 +1,24 @@
 ﻿namespace ProxyPortRouter.Core.Web
 {
+    using System;
     using System.Web.Http;
 
     using JetBrains.Annotations;
 
     using Microsoft.Owin.FileSystems;
-    using Microsoft.Owin.Logging;
     using Microsoft.Owin.StaticFiles;
 
     using Owin;
 
-    using SerilogWeb.Owin;
+    using Serilog.Context;
+
+    using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
 
     public class Startup
     {
         [UsedImplicitly]
         public void Configuration(IAppBuilder app)
         {
-            app.SetLoggerFactory(new SerilogWeb.Owin.LoggerFactory());
-            app.UseSerilogRequestContext();
-
             // Configure Web API for self-host.
             var config = new HttpConfiguration();
 
@@ -33,6 +32,8 @@
                 defaults: new { id = RouteParameter.Optional });
 
             config.DependencyResolver = new Resolver(ServiceProviderBuilder.BuildServiceProvider());
+
+            app.Use<LoggingMiddelware>();
 
             app.UseWebApi(config);
 

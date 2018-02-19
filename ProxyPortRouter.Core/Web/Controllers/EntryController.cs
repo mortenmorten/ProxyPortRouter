@@ -37,9 +37,10 @@
         [HttpPut]
         public async Task<IHttpActionResult> PutCurrentAsync([FromBody] NameEntry entry)
         {
+            Log.Debug("Entry: {@Entry}", entry);
+
             try
             {
-                Log.Information("PUT /api/entry: {@Entry}", entry);
                 await backend.SetCurrentAsync(entry?.Name).ConfigureAwait(false);
                 return await GetCurrentAsync().ConfigureAwait(false);
             }

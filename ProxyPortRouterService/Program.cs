@@ -18,6 +18,7 @@
         internal static void Main()
         {
             Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
                 .MinimumLevel.Debug()
                 .WriteTo.ColoredConsole()
                 .WriteTo.File(Path.Combine(

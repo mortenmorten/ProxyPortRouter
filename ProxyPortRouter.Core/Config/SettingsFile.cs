@@ -9,15 +9,25 @@
 
     public static class SettingsFile
     {
-        public static Settings Load(string filename)
+        public static T LoadFromProgramData<T>(string filename)
+            where T : class
         {
-            Log.Information("JSON deserializing file: {Filename}", filename);
-            return JsonSerializer<Settings>.Deserialize(filename);
+            try
+            {
+                return Load<T>(Path.Combine(GetMyCommonApplicationDataFolder(), filename));
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Error: {Exception}", exception);
+                return default(T);
+            }
         }
 
-        public static Settings LoadFromProgramData(string filename)
+        private static T Load<T>(string filename)
+            where T : class
         {
-            return Load(Path.Combine(GetMyCommonApplicationDataFolder(), filename));
+            Log.Information("JSON deserializing file: {Filename}", filename);
+            return JsonSerializer<T>.Deserialize(filename);
         }
 
         private static string GetMyCommonApplicationDataFolder()

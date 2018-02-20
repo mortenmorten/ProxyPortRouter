@@ -123,8 +123,10 @@
     <Compile Include="Clients\ISlaveClientAsync.cs" />
     <Compile Include="Clients\RestClient.cs" />
     <Compile Include="Config\CommandEntry.cs" />
+    <Compile Include="Config\ILocalSettings.cs" />
     <Compile Include="Config\IOptions.cs" />
     <Compile Include="Config\ISettings.cs" />
+    <Compile Include="Config\LocalSettings.cs" />
     <Compile Include="Config\NameEntry.cs" />
     <Compile Include="Config\Options.cs" />
     <Compile Include="Config\Settings.cs" />

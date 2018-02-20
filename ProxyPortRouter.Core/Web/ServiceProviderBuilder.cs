@@ -16,13 +16,18 @@
 
         static ServiceProviderBuilder()
         {
-            Services.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData("entries.json"));
+            Services.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData<Settings>("entries.json"));
+            Services.AddSingleton<ILocalSettings>(provider => SettingsFile.LoadFromProgramData<LocalSettings>("settings.json"));
             Services.AddSingleton<IPortProxyControllerAsync, PortProxyController>();
             Services.AddSingleton<IOptions>(p => Options.Create(Environment.GetCommandLineArgs()));
             Services.AddSingleton<ISlaveClientAsync>(p =>
                 {
-                    var syncAddress = p.GetService<IOptions>()?.SlaveAddress;
-                    return string.IsNullOrEmpty(syncAddress) ? null : new RestClient(new Uri($"http://{syncAddress}:{8080}"));
+                    var optionsAddress = p.GetService<IOptions>()?.SlaveAddress;
+                    if (string.IsNullOrEmpty(optionsAddress))
+                    {
+                        optionsAddress = p.GetService<ILocalSettings>()?.SlaveAddress;
+                    }
+                    return string.IsNullOrEmpty(optionsAddress) ? null : new RestClient(new Uri($"http://{optionsAddress}:{8080}"));
                 });
             Services.AddTransient<IProcessRunnerAsync, ProcessRunner>();
         }

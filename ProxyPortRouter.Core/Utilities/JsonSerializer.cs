@@ -9,8 +9,15 @@
     {
         public static T Deserialize(string fileName)
         {
-            var content = File.ReadAllText(fileName);
-            return DeserializeFromString(content);
+            try
+            {
+                var content = File.ReadAllText(fileName);
+                return DeserializeFromString(content);
+            }
+            catch
+            {
+                return default(T);
+            }
         }
 
         public static T DeserializeFromString(string json)

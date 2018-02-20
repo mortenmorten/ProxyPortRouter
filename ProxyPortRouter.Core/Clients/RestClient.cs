@@ -13,13 +13,20 @@
         public RestClient(Uri baseAddress)
         {
             Log.Debug("Initializing REST client on {BaseAddress}", baseAddress);
-            client = new HttpClient { BaseAddress = baseAddress };
+            client = new HttpClient { BaseAddress = baseAddress, Timeout = TimeSpan.FromSeconds(5) };
         }
 
-        public Task SetCurrentEntryAsync(string name)
+        public async Task SetCurrentEntryAsync(string name)
         {
             Log.Debug("Syncing REST client entry: {Name}", name);
-            return client.PutAsync($"api/entry?name={name}", null);
+            try
+            {
+                await client.PutAsync($"api/entry?name={name}", null).ConfigureAwait(false);
+            }
+            catch (TaskCanceledException)
+            {
+                Log.Error("Failed to sync REST client");
+            }
         }
 
         public void Dispose()

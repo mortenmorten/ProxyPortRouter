@@ -49,7 +49,7 @@
                 CurrentChanged?.Invoke(this, EventArgs.Empty);
             }
 
-            await UpdateSlaveAsync(name).ConfigureAwait(false);
+            await Task.Factory.StartNew(() => UpdateSlaveAsync(name)).ConfigureAwait(true);
         }
 
         public Task<CommandEntry> GetCurrentAsync()
@@ -62,14 +62,9 @@
             return proxyController.GetEntriesAsync();
         }
 
-        private async Task UpdateSlaveAsync(string name)
+        private Task UpdateSlaveAsync(string name)
         {
-            if (slaveClient == null)
-            {
-                return;
-            }
-
-            await slaveClient.SetCurrentEntryAsync(name).ConfigureAwait(false);
+            return slaveClient == null ? Task.CompletedTask : slaveClient.SetCurrentEntryAsync(name);
         }
     }
 }

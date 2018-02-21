@@ -8,5 +8,5 @@ bin/
 obj/
 *.user
 /ProxyPortRouterKey.snk
-/ProxyPortRouter_*.zip
+/ProxyPortRouter*.zip
 /ProxyPortRouter.Core/wwwroot/**

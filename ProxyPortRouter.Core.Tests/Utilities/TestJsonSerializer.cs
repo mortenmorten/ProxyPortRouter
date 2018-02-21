@@ -34,5 +34,11 @@
             Assert.That(test.Entries, Is.Not.Empty);
             Assert.That(test.Entries[0].Name, Is.EqualTo("None"));
         }
+
+        [Test]
+        public void Serialize_NameEntry_ReturnsJsonString()
+        {
+            Assert.That(JsonSerializer<NameEntry>.Serialize(new NameEntry("test")), Is.EqualTo("{\"name\":\"test\"}"));
+        }
     }
 }

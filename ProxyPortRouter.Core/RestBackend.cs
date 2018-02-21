@@ -17,13 +17,14 @@
 
         [UsedImplicitly]
         public RestBackend()
-            : this(new HttpClient { BaseAddress = new Uri("http://localhost:8080") })
+            : this(null)
         {
         }
 
-        internal RestBackend(HttpClient client)
+        internal RestBackend(HttpMessageHandler handler)
         {
-            httpClient = client;
+            httpClient = handler == null ? new HttpClient() : new HttpClient(handler);
+            httpClient.BaseAddress = new Uri("http://localhost:8080");
             poller = new CurrentEntryPoller(this);
             poller.CurrentChanged += (sender, args) => CurrentChanged?.Invoke(this, args);
         }
@@ -83,12 +84,20 @@
         }
 
         private async Task<T> GetContentAsync<T>(string endpoint)
+            where T : class
         {
             var rtrn = default(T);
             var response = await httpClient.GetAsync(endpoint).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
-                rtrn = await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
+                if (typeof(T) == typeof(string))
+                {
+                    rtrn = await response.Content.ReadAsStringAsync().ConfigureAwait(false) as T;
+                }
+                else
+                {
+                    rtrn = await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
+                }
             }
 
             return rtrn;

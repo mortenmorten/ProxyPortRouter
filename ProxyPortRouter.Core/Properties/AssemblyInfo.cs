@@ -32,5 +32,12 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0")]
-[assembly: AssemblyFileVersion("2.1.0")]
+[assembly: AssemblyVersion("2.1.1")]
+[assembly: AssemblyFileVersion("2.1.1")]
+
+[assembly: InternalsVisibleTo("ProxyPortRouter.Core.Tests,PublicKey=" +
+"0024000004800000940000000602000000240000525341310004000001000100315f7f04c041d4" +
+"5f56ac48459bed4a6c00bccbcb17d090e2163899178020fe9369b7aa6d5818192b908180fcd463" +
+"5efcad99c36cc1142bc8fd78131d3641cab4a9e055725a674e34bb659a760800d5682e62508a2a" +
+"60b9f20811c26bed9b4a787376d0b49a104f4052eca925d75196ee96573eb69d5047af68699f51" +
+"f89c4dcb")]

@@ -3,12 +3,10 @@
     using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
-
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Owin.Hosting;
-
+    using ProxyPortRouter.Core.Socket;
     using ProxyPortRouter.Core.Web;
-
     using Serilog;
 
     public class Main : IDisposable
@@ -32,6 +30,7 @@
             webHost = WebApp.Start<Startup>($"http://*:{RestApiPort}");
 
             Task.Run(() => ServiceProviderBuilder.ServiceProvider.GetService<IBackendAsync>().InitializeAsync());
+            Task.Run(() => ServiceProviderBuilder.ServiceProvider.GetService<TextCommandListener>());
         }
 
         public void Stop()

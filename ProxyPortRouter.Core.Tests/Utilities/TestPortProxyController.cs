@@ -78,6 +78,20 @@
         }
 
         [Test]
+        public async Task GetCurrentEntryAsync_NetshReturnsKnownResultWithPort8080_ReturnsEntry()
+        {
+            settings.Entries.Returns(
+                new List<CommandEntry> { new CommandEntry { Name = "MyEntry", Address = "192.168.42.42:8080" } });
+            processRunner.RunAsync(
+                Arg.Is(NetshCommandFactory.Executable),
+                Arg.Is(NetshCommandFactory.GetShowCommandArguments())).Returns("127.0.0.1 80 192.168.42.42 8080");
+            IPortProxyControllerAsync tempController = new PortProxyController(settings, processRunner);
+            await tempController.RefreshCurrentConnectAddressAsync().ConfigureAwait(false);
+            var currentEntry = await tempController.GetCurrentEntryAsync().ConfigureAwait(false);
+            Assert.That(currentEntry, Is.SameAs(settings.Entries[0]));
+        }
+
+        [Test]
         public void SetCurrentEntryAsync_EntryIsNotInConfig_ThrowsException()
         {
             Assert.ThrowsAsync<InvalidOperationException>(() => controller.SetCurrentEntryAsync("test"));

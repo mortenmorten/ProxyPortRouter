@@ -5,9 +5,9 @@
     using System.Reflection;
     using System.Web.Http;
     using Microsoft.Extensions.DependencyInjection;
-
     using ProxyPortRouter.Core.Clients;
     using ProxyPortRouter.Core.Config;
+    using ProxyPortRouter.Core.Socket;
     using ProxyPortRouter.Core.Utilities;
 
     public static class ServiceProviderBuilder
@@ -30,6 +30,7 @@
                     return string.IsNullOrEmpty(optionsAddress) ? null : new RestClient(new Uri($"http://{optionsAddress}:{8080}"));
                 });
             Services.AddTransient<IProcessRunnerAsync, ProcessRunner>();
+            Services.AddSingleton<TextCommandListener>();
         }
 
         public static ServiceProvider ServiceProvider { get; private set; }

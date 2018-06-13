@@ -1,4 +1,5 @@
-﻿namespace ProxyPortRouter.Core.Utilities
+﻿#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
+namespace ProxyPortRouter.Core.Utilities
 {
     using System;
     using System.Collections.Generic;
@@ -29,12 +30,12 @@
 
         public async Task<CommandEntry> GetCurrentEntryAsync()
         {
-            return (await GetEntriesAsync().ConfigureAwait(false))?.FirstOrDefault(entry => entry.Address == currentAddress)
+            return (await GetEntriesAsync().ConfigureAwait(false))?.FirstOrDefault(IsCurrentEntry)
                    ?? new CommandEntry
-                          {
-                              Name = string.IsNullOrEmpty(currentAddress) ? "<not set>" : "<unknown>",
-                              Address = currentAddress
-                          };
+                   {
+                       Name = string.IsNullOrEmpty(currentAddress) ? "<not set>" : "<unknown>",
+                       Address = currentAddress
+                   };
         }
 
         public async Task SetCurrentEntryAsync(string name)
@@ -58,13 +59,30 @@
                     NetshCommandFactory.GetShowCommandArguments()).ConfigureAwait(false));
         }
 
+        private static (string, int) SplitAddressAndPort(string value)
+        {
+            var split = value?.Split(':');
+            var address = split?.Length > 0 ? split[0] : value;
+            var port = split?.Length > 1 && int.TryParse(split[1], out var iPort) ? iPort : 80;
+            return (address, port);
+        }
+
         private async Task SetConnectAddressAsync(string address)
         {
+            var (hostname, port) = SplitAddressAndPort(address);
             await processRunner.RunAsync(
                 NetshCommandFactory.Executable,
-                string.IsNullOrEmpty(address) ? NetshCommandFactory.GetDeleteCommandArguments(config.ListenAddress) : NetshCommandFactory.GetAddCommandArguments(config.ListenAddress, address))
+                string.IsNullOrEmpty(hostname) ? NetshCommandFactory.GetDeleteCommandArguments(config.ListenAddress) : NetshCommandFactory.GetAddCommandArguments(config.ListenAddress, hostname, port))
                 .ConfigureAwait(false);
             await RefreshCurrentConnectAddressAsync().ConfigureAwait(false);
         }
+
+        private bool IsCurrentEntry(CommandEntry entry)
+        {
+            var (entryHostname, entryPort) = SplitAddressAndPort(entry.Address);
+            var (currentHostname, currentPort) = SplitAddressAndPort(currentAddress);
+            return entryHostname == currentHostname && entryPort == currentPort;
+        }
     }
 }
+#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly

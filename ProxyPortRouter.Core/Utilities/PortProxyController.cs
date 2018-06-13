@@ -71,9 +71,17 @@ namespace ProxyPortRouter.Core.Utilities
         {
             var (hostname, port) = SplitAddressAndPort(address);
             await processRunner.RunAsync(
-                NetshCommandFactory.Executable,
-                string.IsNullOrEmpty(hostname) ? NetshCommandFactory.GetDeleteCommandArguments(config.ListenAddress) : NetshCommandFactory.GetAddCommandArguments(config.ListenAddress, hostname, port))
+                    NetshCommandFactory.Executable,
+                    NetshCommandFactory.GetDeleteCommandArguments(config.ListenAddress))
                 .ConfigureAwait(false);
+            if (!string.IsNullOrEmpty(hostname))
+            {
+                await processRunner.RunAsync(
+                        NetshCommandFactory.Executable,
+                        NetshCommandFactory.GetAddCommandArguments(config.ListenAddress, hostname, port))
+                    .ConfigureAwait(false);
+            }
+
             await RefreshCurrentConnectAddressAsync().ConfigureAwait(false);
         }
 

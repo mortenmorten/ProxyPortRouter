@@ -136,6 +136,12 @@
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestBackend.cs" />
+    <Compile Include="Socket\Command.cs" />
+    <Compile Include="Socket\CommandException.cs" />
+    <Compile Include="Socket\CommandReceivedArgs.cs" />
+    <Compile Include="Socket\TextCommandClient.cs" />
+    <Compile Include="Socket\TextCommandListener.cs" />
+    <Compile Include="Socket\TextCommandReader.cs" />
     <Compile Include="Utilities\CommandResultParser.cs" />
     <Compile Include="Utilities\CurrentEntryPoller.cs" />
     <Compile Include="Utilities\IConnectAddressSetter.cs" />

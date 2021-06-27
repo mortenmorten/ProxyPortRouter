@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
+    using System.Net.Http.Json;
     using System.Threading.Tasks;
 
     using JetBrains.Annotations;
@@ -58,7 +59,7 @@
             var newEntry = string.Empty;
             if (response.IsSuccessStatusCode)
             {
-                newEntry = (await response.Content.ReadAsAsync<CommandEntry>().ConfigureAwait(false))?.Name;
+                newEntry = (await response.Content.ReadFromJsonAsync<CommandEntry>().ConfigureAwait(false))?.Name;
             }
 
             if (previousEntry != null && previousEntry != newEntry)
@@ -96,7 +97,7 @@
                 }
                 else
                 {
-                    rtrn = await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
+                    rtrn = await response.Content.ReadFromJsonAsync<T>().ConfigureAwait(false);
                 }
             }
 

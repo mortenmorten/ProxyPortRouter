@@ -2,7 +2,7 @@
 {
     using System;
     using System.Net.Http;
-    using System.Net.Http.Formatting;
+    using System.Net.Http.Json;
     using System.Threading.Tasks;
 
     using ProxyPortRouter.Core.Config;
@@ -36,7 +36,7 @@
             Log.Debug("Syncing REST client entry: {Name}", name);
             try
             {
-                await client.PutAsync("api/entry", new NameEntry(name), new JsonMediaTypeFormatter()).ConfigureAwait(false);
+                await client.PutAsJsonAsync("api/entry", new NameEntry(name)).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {

@@ -10,3 +10,4 @@ obj/
 /ProxyPortRouterKey.snk
 /ProxyPortRouter*.zip
 /ProxyPortRouter.Core/wwwroot/**
+/.idea/.idea.ProxyPortRouter/.idea

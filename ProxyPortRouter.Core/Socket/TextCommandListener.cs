@@ -4,17 +4,27 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
-    using System.Windows.Threading;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using ProxyPortRouter.Core.Config;
-    using Serilog;
 
-    public class TextCommandListener : IDisposable
+    public class TextCommandListener : IHostedService
     {
+        private readonly ILocalSettings settings;
+        private readonly ILogger<TextCommandListener> logger;
         private readonly List<TextCommandClient> clients = new List<TextCommandClient>();
         private readonly byte[] buffer = new byte[1024];
         private readonly object sync = new object();
 
-        public TextCommandListener(ILocalSettings settings)
+        public TextCommandListener(ILocalSettings settings, ILogger<TextCommandListener> logger)
+        {
+            this.settings = settings;
+            this.logger = logger;
+        }
+
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             var port = settings.SimulatorPort != 0 ? settings.SimulatorPort : 8081;
 
@@ -23,34 +33,15 @@
             var listener = new TcpListener(address, port);
             listener.Start();
             listener.BeginAcceptSocket(AcceptCallback, listener);
-            Log.Information("WebIO Simulator listening on {Address} port {Port}", address, port);
+            logger.LogInformation("WebIO Simulator listening on {Address} port {Port}", address, port);
+
+            return Task.CompletedTask;
         }
 
-        public void CloseClient(TextCommandClient client)
+        public Task StopAsync(CancellationToken cancellationToken)
         {
-            Log.Debug("Closing client {RemoteEndPoint}", client.Socket.RemoteEndPoint);
-
-            lock (sync)
-            {
-                clients.Remove(client);
-            }
-
-            client.Dispose();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            Log.Information("Closing down WebIO Simulator");
-            if (!disposing)
-            {
-                return;
-            }
-
+            logger.LogInformation("Closing down WebIO Simulator");
+ 
             lock (sync)
             {
                 foreach (var client in clients)
@@ -60,6 +51,21 @@
 
                 clients.Clear();
             }
+
+            return Task.CompletedTask;
+        }
+
+
+        public void CloseClient(TextCommandClient client)
+        {
+            logger.LogDebug("Closing client {RemoteEndPoint}", client.Socket.RemoteEndPoint);
+
+            lock (sync)
+            {
+                clients.Remove(client);
+            }
+
+            client.Dispose();
         }
 
         private void AcceptCallback(IAsyncResult result)
@@ -71,7 +77,7 @@
                 var socket = listener.EndAcceptSocket(result);
                 var client = new TextCommandClient(this, socket);
 
-                Log.Debug("Accepting connection from {RemoteEndPoint}", client.Socket.RemoteEndPoint);
+                logger.LogDebug("Accepting connection from {RemoteEndPoint}", client.Socket.RemoteEndPoint);
 
                 lock (sync)
                 {
@@ -83,7 +89,7 @@
             }
             catch (SocketException ex)
             {
-                Log.Error("Accept error", ex);
+                logger.LogError(ex, "Accept error");
             }
             catch (ObjectDisposedException)
             {

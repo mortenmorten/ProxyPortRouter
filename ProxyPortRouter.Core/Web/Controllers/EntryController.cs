@@ -1,17 +1,18 @@
 ﻿namespace ProxyPortRouter.Core.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using System.Web.Http;
-    using System.Web.Http.Cors;
+
+    using Microsoft.AspNetCore.Mvc;
 
     using ProxyPortRouter.Core.Config;
 
     using Serilog;
 
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [RoutePrefix("api/entry")]
-    public class EntryController : ApiController
+    [ApiController]
+    [Route("api/entry")]
+    public class EntryController : ControllerBase
     {
         private readonly IBackendAsync backend;
 
@@ -20,9 +21,8 @@
             this.backend = backend;
         }
 
-        [Route("")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetCurrentAsync()
+        public async Task<ActionResult<CommandEntry>> GetCurrentAsync()
         {
             var entry = await backend.GetCurrentAsync().ConfigureAwait(false);
             if (entry == null)
@@ -33,9 +33,8 @@
             return Ok(entry);
         }
 
-        [Route("")]
         [HttpPut]
-        public async Task<IHttpActionResult> PutCurrentAsync([FromBody] NameEntry entry)
+        public async Task<ActionResult<CommandEntry>> PutCurrentAsync([FromBody] NameEntry entry)
         {
             Log.Debug("Entry: {@Entry}", entry);
 
@@ -50,16 +49,14 @@
             }
         }
 
-        [Route("list")]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetEntriesAsync()
+        [HttpGet("list")]
+        public async Task<ActionResult<IEnumerable<CommandEntry>>> GetEntriesAsync()
         {
             return Ok(await backend.GetEntriesAsync().ConfigureAwait(false));
         }
 
-        [Route("listen")]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetListenAddressAsync()
+        [HttpGet("listen")]
+        public async Task<ActionResult> GetListenAddressAsync()
         {
             return Ok(await backend.GetListenAddressAsync().ConfigureAwait(true));
         }

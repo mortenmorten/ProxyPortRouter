@@ -1,56 +1,46 @@
 ﻿namespace ProxyPortRouter.Core.Web
 {
-    using System;
-    using System.Web.Http;
-
     using JetBrains.Annotations;
-
-    using Microsoft.Owin.FileSystems;
-    using Microsoft.Owin.StaticFiles;
-
-    using Owin;
-
-    using Serilog.Context;
-
-    using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.FileProviders;
 
     public class Startup
     {
-        [UsedImplicitly]
-        public void Configuration(IAppBuilder app)
+        public Startup(IConfiguration configuration)
         {
-            // Configure Web API for self-host.
-            var config = new HttpConfiguration();
+            Configuration = configuration;
+        }
 
-            config.EnableCors();
+        public IConfiguration Configuration { get; }
 
-            config.MapHttpAttributeRoutes();
+        [UsedImplicitly]
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddHealthChecks();
+        }
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional });
+        [UsedImplicitly]
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseStaticFiles();
 
-            config.DependencyResolver = new Resolver(ServiceProviderBuilder.BuildServiceProvider());
+            app.UseRouting();
 
-            app.Use<LoggingMiddelware>();
+            app.UseFileServer(new FileServerOptions
+            {
+                EnableDefaultFiles = true,
+                FileProvider = new PhysicalFileProvider(System.IO.Path.Join(env.ContentRootPath, "wwwroot")),
+                DefaultFilesOptions = { DefaultFileNames = new[] { "index.html" } },
+            });
 
-            app.UseWebApi(config);
-
-            var physicalFileSystem = new PhysicalFileSystem(@".\wwwroot");
-            var options = new FileServerOptions
-                              {
-                                  EnableDefaultFiles = true,
-                                  FileSystem = physicalFileSystem,
-                                  StaticFileOptions =
-                                      {
-                                          FileSystem = physicalFileSystem,
-                                          ServeUnknownFileTypes = true
-                                      },
-                                  DefaultFilesOptions = { DefaultFileNames = new[] { "index.html" } }
-                              };
-
-            app.UseFileServer(options);
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/health");
+            });
         }
     }
 }

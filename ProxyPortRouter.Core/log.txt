@@ -1,0 +1,73 @@
+2021-06-26 11:28:24.201 +02:00 [INF] Loaded 2 extensions
+2021-06-26 11:28:24.363 +02:00 [INF] MSBuild registered from C:\Program Files\dotnet\sdk\5.0.301\
+2021-06-26 11:28:25.521 +02:00 [INF] Initializing upgrade step Select an entrypoint
+2021-06-26 11:28:25.526 +02:00 [INF] Setting entrypoint to only project in solution: C:\users\morte\Code\ProxyPortRouter\ProxyPortRouter.Core\ProxyPortRouter.Core.csproj
+2021-06-26 11:28:25.536 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-06-26 11:28:25.604 +02:00 [INF] Initializing upgrade step Back up project
+2021-06-26 11:28:28.856 +02:00 [INF] Skipping upgrade step Back up project
+2021-06-26 11:28:28.856 +02:00 [INF] Upgrade step Back up project skipped
+2021-06-26 11:28:30.113 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-06-26 11:28:31.767 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-06-26 11:28:31.770 +02:00 [INF] Converting project file format with try-convert, version 0.7.226301
+2021-06-26 11:28:33.791 +02:00 [INF] [dotnet] Conversion complete!
+2021-06-26 11:28:34.242 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-06-26 11:28:35.483 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-06-26 11:28:36.448 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-06-26 11:28:37.973 +02:00 [WRN] .NET Upgrade Assistant analyzer NuGet package reference cannot be added because the package cannot be found
+2021-06-26 11:28:37.978 +02:00 [INF] No package updates needed
+2021-06-26 11:28:37.979 +02:00 [INF] Initializing upgrade step Update TFM
+2021-06-26 11:28:37.987 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-06-26 11:28:39.952 +02:00 [INF] Applying upgrade step Update TFM
+2021-06-26 11:28:41.772 +02:00 [INF] Updated TFM to net5.0-windows
+2021-06-26 11:28:41.774 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-06-26 11:28:43.236 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-06-26 11:28:44.504 +02:00 [INF] Marking package Microsoft.AspNet.WebApi.Cors, Version=5.2.4 for removal because it doesn't support the target framework but a newer version (5.2.7) does
+2021-06-26 11:28:44.518 +02:00 [INF] Marking package Microsoft.AspNet.WebApi.Owin, Version=5.2.4 for removal because it doesn't support the target framework but a newer version (5.2.7) does
+2021-06-26 11:28:44.534 +02:00 [INF] Marking package Microsoft.Owin.StaticFiles, Version=4.0.0 for removal because it doesn't support the target framework but a newer version (4.2.0) does
+2021-06-26 11:28:44.544 +02:00 [WRN] No version of Microsoft.AspNet.WebApi.Cors found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:44.552 +02:00 [WRN] No version of Microsoft.AspNet.WebApi.Owin found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:44.557 +02:00 [WRN] No version of Microsoft.Owin.StaticFiles found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:44.560 +02:00 [WRN] .NET Upgrade Assistant analyzer NuGet package reference cannot be added because the package cannot be found
+2021-06-26 11:28:44.621 +02:00 [INF] Adding Microsoft.Windows.Compatibility 5.0.2
+2021-06-26 11:28:44.629 +02:00 [INF] Packages to be removed: Microsoft.AspNet.WebApi.Cors, Version=5.2.4
+Microsoft.AspNet.WebApi.Owin, Version=5.2.4
+Microsoft.Owin.StaticFiles, Version=4.0.0
+2021-06-26 11:28:44.631 +02:00 [INF] Packages to be added: Microsoft.AspNet.WebApi.Cors, Version=5.2.7
+Microsoft.AspNet.WebApi.Owin, Version=5.2.7
+Microsoft.Owin.StaticFiles, Version=4.2.0
+Microsoft.Windows.Compatibility, Version=5.0.2
+2021-06-26 11:28:47.284 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-06-26 11:28:47.286 +02:00 [INF] Removing outdated package reference: Microsoft.AspNet.WebApi.Cors, Version=5.2.4
+2021-06-26 11:28:47.288 +02:00 [INF] Removing outdated package reference: Microsoft.AspNet.WebApi.Owin, Version=5.2.4
+2021-06-26 11:28:47.290 +02:00 [INF] Removing outdated package reference: Microsoft.Owin.StaticFiles, Version=4.0.0
+2021-06-26 11:28:47.292 +02:00 [INF] Adding package reference: Microsoft.AspNet.WebApi.Cors, Version=5.2.7
+2021-06-26 11:28:47.293 +02:00 [INF] Adding package reference: Microsoft.AspNet.WebApi.Owin, Version=5.2.7
+2021-06-26 11:28:47.294 +02:00 [INF] Adding package reference: Microsoft.Owin.StaticFiles, Version=4.2.0
+2021-06-26 11:28:47.295 +02:00 [INF] Adding package reference: Microsoft.Windows.Compatibility, Version=5.0.2
+2021-06-26 11:28:49.309 +02:00 [INF] Marking package System.ComponentModel.Composition for removal because it appears to be a transitive dependency
+2021-06-26 11:28:49.317 +02:00 [INF] Marking package System.Data.DataSetExtensions for removal because it appears to be a transitive dependency
+2021-06-26 11:28:49.356 +02:00 [WRN] No version of Microsoft.AspNet.WebApi.Cors found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:49.362 +02:00 [WRN] No version of Microsoft.AspNet.WebApi.Owin found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:49.366 +02:00 [WRN] No version of Microsoft.Owin.StaticFiles found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:49.369 +02:00 [WRN] .NET Upgrade Assistant analyzer NuGet package reference cannot be added because the package cannot be found
+2021-06-26 11:28:49.436 +02:00 [INF] Removing outdated package reference: System.ComponentModel.Composition, Version=5.0.0
+2021-06-26 11:28:49.438 +02:00 [INF] Removing outdated package reference: System.Data.DataSetExtensions, Version=4.5.0
+2021-06-26 11:28:51.528 +02:00 [WRN] No version of Microsoft.AspNet.WebApi.Cors found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:51.534 +02:00 [WRN] No version of Microsoft.AspNet.WebApi.Owin found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:51.539 +02:00 [WRN] No version of Microsoft.Owin.StaticFiles found that supports ["net5.0-windows"]; leaving unchanged
+2021-06-26 11:28:51.542 +02:00 [WRN] .NET Upgrade Assistant analyzer NuGet package reference cannot be added because the package cannot be found
+2021-06-26 11:28:51.607 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-06-26 11:28:52.723 +02:00 [INF] Initializing upgrade step Add template files
+2021-06-26 11:28:52.733 +02:00 [INF] 0 expected template items needed
+2021-06-26 11:28:52.735 +02:00 [INF] Initializing upgrade step Upgrade app config files
+2021-06-26 11:28:52.751 +02:00 [INF] Found 0 app settings for upgrade: 
+2021-06-26 11:28:52.754 +02:00 [INF] Found 0 connection strings for upgrade: 
+2021-06-26 11:28:52.768 +02:00 [INF] Initializing upgrade step Update source code
+2021-06-26 11:28:54.177 +02:00 [INF] Initializing upgrade step Move to next project
+2021-06-26 11:28:55.911 +02:00 [INF] Applying upgrade step Move to next project
+2021-06-26 11:28:55.912 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-06-26 11:28:56.988 +02:00 [INF] Initializing upgrade step Finalize upgrade
+2021-06-26 11:28:58.446 +02:00 [INF] Applying upgrade step Finalize upgrade
+2021-06-26 11:28:58.447 +02:00 [INF] Upgrade step Finalize upgrade applied successfully
+2021-06-26 11:28:59.259 +02:00 [INF] Upgrade has completed. Please review any changes.
+2021-06-26 11:28:59.266 +02:00 [INF] No state to save

@@ -16,20 +16,32 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}    
+    
     - name: Node ${{ env.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.node-version }}
-        cache: 'yarn'
-    - working-directory: ./ControlApp
-      run: yarn install
-    - working-directory: ./ControlApp
-      run: yarn build
+
+    - name: Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+
+    - working-directory: ./ControlApp
+      run: yarn install
+    - working-directory: ./ControlApp
+      run: yarn build
+
     - name: Restore dependencies
       run: dotnet restore
     - name: Build

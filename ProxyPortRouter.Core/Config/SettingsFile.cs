@@ -10,7 +10,7 @@
     public static class SettingsFile
     {
         public static T LoadFromProgramData<T>(string filename)
-            where T : class
+            where T : class, new()
         {
             try
             {
@@ -19,12 +19,12 @@
             catch (Exception exception)
             {
                 Log.Error("Error: {Exception}", exception);
-                return default(T);
+                return default;
             }
         }
 
         private static T Load<T>(string filename)
-            where T : class
+            where T : class, new()
         {
             Log.Information("JSON deserializing file: {Filename}", filename);
             return JsonSerializer<T>.Deserialize(filename);

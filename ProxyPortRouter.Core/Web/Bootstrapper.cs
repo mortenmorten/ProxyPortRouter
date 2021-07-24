@@ -12,7 +12,7 @@
         public static void Initialize(this IServiceCollection services)
         {
             services.AddSingleton<ISettings>(SettingsFile.LoadFromProgramData<Settings>("entries.json"));
-            services.AddSingleton<ILocalSettings>(provider => SettingsFile.LoadFromProgramData<LocalSettings>("settings.json"));
+            services.AddSingleton<ILocalSettings>(SettingsFile.LoadFromProgramData<LocalSettings>("settings.json"));
             services.AddSingleton<IPortProxyControllerAsync, PortProxyController>();
             services.AddSingleton<IOptions>(p => Options.Create(Environment.GetCommandLineArgs()));
             services.AddSingleton<ISlaveClientAsync>(p =>
@@ -26,8 +26,6 @@
                 return string.IsNullOrEmpty(optionsAddress) ? null : new RestClient(new Uri($"http://{optionsAddress}:{8080}"));
             });
             services.AddTransient<IProcessRunnerAsync, ProcessRunner>();
-            services.AddSingleton<TextCommandListener>();
-
             services.AddHostedService<TextCommandListener>();
         }
 

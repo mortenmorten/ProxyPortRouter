@@ -46,9 +46,9 @@
     <PackageReference Include="Topshelf.Serilog" Version="4.3.0" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>If "$(ConfigurationName)" == "Release" (
-  powershell -Command "&amp; { Compress-Archive -Path '$(TargetDir)*' -DestinationPath '$(SolutionDir)ProxyPortRouter.zip' -Force }"
-)</PostBuildEvent>
+    <PostBuildEvent Condition="'$(Configuration)'=='Release'" >
+powershell -Command "&amp; { Compress-Archive -Path '$(TargetDir)*' -DestinationPath '$(SolutionDir)ProxyPortRouter.zip' -Force }"
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup />
 </Project>

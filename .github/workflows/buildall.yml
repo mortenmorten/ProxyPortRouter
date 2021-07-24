@@ -10,22 +10,22 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
+    env:
+      node-version: 16.x
 
     steps:
     - uses: actions/checkout@v2
     
-    - name: Node ${{ matrix.node-version }}
+    - name: Node ${{ env.node-version }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ env.node-version }}
         cache: 'yarn'
     - working-directory: ./ControlApp
       run: yarn install
     - working-directory: ./ControlApp
       run: yarn build
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:

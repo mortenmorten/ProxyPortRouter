@@ -19,5 +19,6 @@ export class EntriesListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.entries = [];
   }
 }

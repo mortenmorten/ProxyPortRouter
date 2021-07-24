@@ -17,21 +17,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Cache node modules
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/yarn-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
     - name: Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: yarn install and build
-      run: |
-        yarn install
-        yarn build    
+        cache: 'yarn'
+    - working-directory: ./ControlApp
+      run: yarn install
+    - working-directory: ./ControlApp
+      run: yarn build
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:

@@ -8,7 +8,6 @@
     using ProxyPortRouter.Core.Web;
 
     using Serilog;
-    using Serilog.Extensions.Hosting;
 
     using Topshelf;
     using Topshelf.Extensions.Hosting;
@@ -34,7 +33,6 @@
 
             var rc = CreateHostBuilder(args).RunAsTopshelfService(x =>
             {
-                x.UseSerilog();
                 x.RunAsLocalSystem();
                 x.SetDescription("Service for hosting a proxy port router");
                 x.SetDisplayName("Proxy Port Router");

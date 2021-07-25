@@ -13,22 +13,10 @@
     {
         private readonly HttpClient client;
 
-        public RestClient(Uri baseAddress)
-            : this(baseAddress, null)
+        public RestClient(HttpClient httpClient)
         {
-        }
-
-        internal RestClient(HttpMessageHandler handler)
-            : this(new Uri("http://localhost:8080"), handler)
-        {
-        }
-
-        private RestClient(Uri baseAddress, HttpMessageHandler handler)
-        {
-            Log.Debug("Initializing REST client on {BaseAddress}", baseAddress);
-            client = handler == null ? new HttpClient() : new HttpClient(handler);
-            client.BaseAddress = baseAddress;
-            client.Timeout = TimeSpan.FromSeconds(5);
+            Log.Debug("Initializing REST client on {BaseAddress}", httpClient.BaseAddress);
+            client = httpClient;
         }
 
         public async Task SetCurrentEntryAsync(string name)

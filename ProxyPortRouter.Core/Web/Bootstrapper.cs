@@ -1,6 +1,7 @@
 ﻿namespace ProxyPortRouter.Core.Web
 {
     using System;
+    using System.Net.Http;
     using Microsoft.Extensions.DependencyInjection;
     using ProxyPortRouter.Core.Clients;
     using ProxyPortRouter.Core.Config;
@@ -15,6 +16,7 @@
             services.AddSingleton<ILocalSettings>(SettingsFile.LoadFromProgramData<LocalSettings>("settings.json"));
             services.AddSingleton<IPortProxyControllerAsync, PortProxyController>();
             services.AddSingleton<IOptions>(p => Options.Create(Environment.GetCommandLineArgs()));
+            services.AddHttpClient();
             services.AddSingleton<ISlaveClientAsync>(p =>
             {
                 var optionsAddress = p.GetService<IOptions>()?.SlaveAddress;
@@ -23,8 +25,28 @@
                     optionsAddress = p.GetService<ILocalSettings>()?.SlaveAddress;
                 }
 
-                return string.IsNullOrEmpty(optionsAddress) ? null : new RestClient(new Uri($"http://{optionsAddress}:{8080}"));
+                if (string.IsNullOrEmpty(optionsAddress))
+                {
+                    return null;
+                }
+
+                var addressParts = optionsAddress.Split(':');
+                var host = addressParts.Length > 0 ? addressParts[0] : optionsAddress;
+                var port = addressParts.Length > 1 && int.TryParse(addressParts[1], out var parsedPort) ? parsedPort : 8080;
+                var uriBuilder = new UriBuilder()
+                {
+                    Scheme = "http",
+                    Host = host,
+                    Port = port,
+                };
+
+                var httpClient = p.GetRequiredService<IHttpClientFactory>().CreateClient();
+                httpClient.BaseAddress = uriBuilder.Uri;
+                httpClient.Timeout = TimeSpan.FromSeconds(5);
+
+                return new RestClient(httpClient);
             });
+
             services.AddTransient<IProcessRunnerAsync, ProcessRunner>();
             services.AddHostedService<TextCommandListener>();
         }

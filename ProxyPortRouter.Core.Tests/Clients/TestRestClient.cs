@@ -1,5 +1,6 @@
 ﻿namespace ProxyPortRouter.Core.Tests.Clients
 {
+    using System;
     using System.Net;
     using System.Net.Http;
     using System.Text;
@@ -38,7 +39,7 @@
                                 "application/json")
                         }).AndDoes(ci => hasSentMessage = true);
 
-            var client = new RestClient(handler);
+            var client = new RestClient(new HttpClient(handler) { BaseAddress = new Uri("http://localhost") });
             await client.SetCurrentEntryAsync("theEntryName").ConfigureAwait(false);
 
             Assert.That(hasSentMessage, Is.True);
